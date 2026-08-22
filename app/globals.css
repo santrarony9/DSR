@@ -1,0 +1,70 @@
+@import "tailwindcss";
+
+:root {
+  --color-primary: #526354;
+  --color-accent: #C8A96E;
+  --color-dark: #1a1a1a;
+  --color-light: #FAFAF5;
+  --color-card: #F5F0EB;
+}
+
+@theme {
+  --color-primary: var(--color-primary);
+  --color-accent: var(--color-accent);
+  --color-dark: var(--color-dark);
+  --color-light: var(--color-light);
+  --color-card: var(--color-card);
+  
+  --font-bricolage: var(--font-heading);
+  --font-karla: var(--font-body);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body), sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading), sans-serif;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-light);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-primary);
+  border-radius: 5px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #3e4a3f;
+}
+
+@layer utilities {
+  .section-padding {
+    @apply py-16 md:py-24;
+  }
+  
+  .gold-gradient-text {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-[#C8A96E] via-[#e8d5a7] to-[#C8A96E];
+  }
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  animation: marquee 30s linear infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
