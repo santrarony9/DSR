@@ -2,8 +2,26 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { MapPin, Phone, Mail } from 'lucide-react';
 import { navLinks } from '@/lib/constants';
+import connectToDatabase from '@/lib/db';
+import Settings from '@/lib/models/Settings';
 
-export default function Footer() {
+export default async function Footer() {
+  let phone = "+91 9830556659";
+  let email = "dsrevent06@gmail.com";
+  let address = "104A/22V Karunamoyee Ghat Road, Kolkata, West Bengal 700082";
+
+  try {
+    await connectToDatabase();
+    const settings = await Settings.findOne();
+    if (settings) {
+      if (settings.phone) phone = settings.phone;
+      if (settings.email) email = settings.email;
+      if (settings.address) address = settings.address;
+    }
+  } catch (error) {
+    // Fallback to defaults if DB is not available
+  }
+
   return (
     <footer className="bg-[#526354] text-[#FAFAF5] pt-16 pb-8">
       <div className="container mx-auto px-4 md:px-6">
@@ -77,26 +95,32 @@ export default function Footer() {
             <ul className="space-y-4">
               <li className="flex items-start">
                 <MapPin className="mr-3 mt-1 shrink-0 text-[#C8A96E]" size={20} />
-                <span className="opacity-90">123 Event Street, Salt Lake City, Kolkata, West Bengal 700091</span>
+                <span className="opacity-90">{address}</span>
               </li>
               <li className="flex items-center">
                 <Phone className="mr-3 shrink-0 text-[#C8A96E]" size={20} />
-                <a href="tel:+916289380112" className="hover:text-[#C8A96E] transition-colors opacity-90 hover:opacity-100">
-                  +91 62893 80112
+                <a href={`tel:${phone.replace(/\s+/g, '')}`} className="hover:text-[#C8A96E] transition-colors opacity-90 hover:opacity-100">
+                  {phone}
                 </a>
               </li>
               <li className="flex items-center">
                 <Mail className="mr-3 shrink-0 text-[#C8A96E]" size={20} />
-                <a href="mailto:info@dsreventplanner.com" className="hover:text-[#C8A96E] transition-colors opacity-90 hover:opacity-100">
-                  info@dsreventplanner.com
+                <a href={`mailto:${email}`} className="hover:text-[#C8A96E] transition-colors opacity-90 hover:opacity-100">
+                  {email}
                 </a>
               </li>
             </ul>
           </div>
         </div>
 
-        <div className="border-t border-white/20 pt-8 text-center text-sm opacity-80">
+        <div className="border-t border-white/20 pt-8 flex flex-col md:flex-row justify-between items-center text-sm opacity-80 space-y-4 md:space-y-0">
           <p>&copy; {new Date().getFullYear()} DSR Event Planner. All rights reserved.</p>
+          <p>
+            Developed and Maintain by - <a href="#" className="font-semibold hover:text-[#C8A96E] transition-colors">Dreamline Production</a>
+          </p>
+          <Link href="/admin/login" className="hover:text-[#C8A96E] transition-colors font-medium">
+            Admin Login
+          </Link>
         </div>
       </div>
     </footer>

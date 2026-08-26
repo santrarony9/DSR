@@ -8,8 +8,11 @@ import WhyUsSection from '@/components/home/WhyUsSection';
 import ProjectsTabs from '@/components/home/ProjectsTabs';
 import TestimonialsGrid from '@/components/home/TestimonialsGrid';
 import CTASection from '@/components/home/CTASection';
+import { getGalleryData } from '@/lib/fetchGallery';
 
-export default function Home() {
+export default async function Home() {
+  const galleryCategories = await getGalleryData();
+
   return (
     <div>
       <HeroCarousel />
@@ -19,7 +22,7 @@ export default function Home() {
       <VideoSection />
       <ServicesGrid />
       <WhyUsSection />
-      <ProjectsTabs />
+      <ProjectsTabs categories={galleryCategories} />
       <TestimonialsGrid />
       <CTASection />
     </div>

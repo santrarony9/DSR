@@ -1,83 +1,110 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import Image from 'next/image';
-import { motion, AnimatePresence } from 'framer-motion';
-import { galleryCategories } from '@/lib/data';
+import { useState } from "react";
+import Image from "next/image";
+import { motion, AnimatePresence } from "framer-motion";
+import { Maximize2, X } from "lucide-react";
 
-export default function ProjectsClient() {
-  const [activeTab, setActiveTab] = useState(galleryCategories[0].id);
+export default function ProjectsClient({ categories }: { categories: any[] }) {
+  const [activeTab, setActiveTab] = useState(categories[0]?.id || "");
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
-  const activeCategory = galleryCategories.find(cat => cat.id === activeTab);
+  const activeCategory = categories.find((cat) => cat.id === activeTab) || categories[0];
+
+  if (!categories || categories.length === 0) return null;
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#FAFAF5]">
-      <section className="bg-[#526354] text-white pt-36 pb-20 px-4 sm:px-6 lg:px-8 text-center relative overflow-hidden flex flex-col justify-center min-h-[30vh]">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="relative z-10 max-w-4xl mx-auto"
-        >
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold font-bricolage mb-4 text-[#FAFAF5]">
-            Our Projects
-          </h1>
-          <p className="text-xl md:text-2xl text-[#C8A96E] font-medium max-w-2xl mx-auto">
-            A glimpse into the magical moments we've created
-          </p>
-        </motion.div>
-      </section>
+    <>
+      <div className="container mx-auto px-4 md:px-6">
+        {/* Category Filters */}
+        <div className="flex flex-wrap justify-center gap-2 md:gap-4 mb-12">
+          {categories.map((category) => (
+            <button
+              key={category.id}
+              onClick={() => setActiveTab(category.id)}
+              className={`px-6 py-2.5 rounded-full text-sm font-medium transition-all duration-300 ${
+                activeTab === category.id
+                  ? "bg-[#526354] text-white shadow-md transform scale-105"
+                  : "bg-white text-slate-600 border border-slate-200 hover:bg-slate-50"
+              }`}
+            >
+              {category.label}
+            </button>
+          ))}
+        </div>
 
-      {/* Gallery Section */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
-          {/* Tabs */}
-          <div className="flex overflow-x-auto pb-4 mb-8 -mx-4 px-4 sm:mx-0 sm:px-0 hide-scrollbar gap-3 sm:flex-wrap sm:justify-center">
-            {galleryCategories.map((category) => (
-              <button
-                key={category.id}
-                onClick={() => setActiveTab(category.id)}
-                className={`whitespace-nowrap px-6 py-3 rounded-full text-sm font-bold transition-all duration-300 ${
-                  activeTab === category.id
-                    ? 'bg-[#C8A96E] text-white shadow-md'
-                    : 'bg-[#F5F0EB] text-gray-700 hover:bg-[#e8e2db]'
-                }`}
-              >
-                {category.label}
-              </button>
-            ))}
-          </div>
-
-          {/* Image Grid */}
-          <motion.div 
-            layout
-            className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6"
-          >
-            <AnimatePresence mode="popLayout">
-              {activeCategory?.images.map((image, index) => (
+        {/* Gallery Grid */}
+        <div className="min-h-[600px]">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeTab}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.4 }}
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+            >
+              {activeCategory?.images.map((img: any, idx: number) => (
                 <motion.div
-                  key={`${activeTab}-${index}`}
-                  layout
+                  key={idx}
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.9 }}
-                  transition={{ duration: 0.3 }}
-                  className="relative aspect-square rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-shadow group cursor-pointer"
+                  transition={{ delay: idx * 0.1 }}
+                  className="group relative aspect-square overflow-hidden rounded-xl bg-slate-100 cursor-pointer shadow-sm hover:shadow-md transition-shadow"
+                  onClick={() => setSelectedImage(img.src)}
                 >
                   <Image
-                    src={image.src}
-                    alt={image.alt}
+                    src={img.src}
+                    alt={img.alt}
                     fill
-                    className="object-cover transition-transform duration-500 group-hover:scale-110"
-                    sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                    className="object-cover transition-transform duration-700 group-hover:scale-110"
                   />
-                  <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                    <Maximize2 className="text-white w-8 h-8 opacity-75" />
+                  </div>
                 </motion.div>
               ))}
-            </AnimatePresence>
-          </motion.div>
+              {(!activeCategory?.images || activeCategory.images.length === 0) && (
+                <p className="text-center text-gray-500 w-full col-span-full py-12">No images available for this category.</p>
+              )}
+            </motion.div>
+          </AnimatePresence>
         </div>
-      </section>
-    </div>
+      </div>
+
+      {/* Lightbox */}
+      <AnimatePresence>
+        {selectedImage && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4"
+            onClick={() => setSelectedImage(null)}
+          >
+            <button
+              className="absolute top-6 right-6 text-white/75 hover:text-white transition-colors"
+              onClick={() => setSelectedImage(null)}
+            >
+              <X className="w-8 h-8" />
+            </button>
+            <motion.div
+              initial={{ scale: 0.95 }}
+              animate={{ scale: 1 }}
+              exit={{ scale: 0.95 }}
+              className="relative w-full max-w-5xl aspect-[4/3] rounded-lg overflow-hidden"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <Image
+                src={selectedImage}
+                alt="Enlarged view"
+                fill
+                className="object-contain"
+              />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   );
 }
