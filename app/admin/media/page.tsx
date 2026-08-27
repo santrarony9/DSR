@@ -1,4 +1,5 @@
 import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
 import connectToDatabase from "@/lib/db";
 import Category from "@/lib/models/Category";
@@ -6,7 +7,7 @@ import Media from "@/lib/models/Media";
 import MediaClient from "./MediaClient";
 
 export default async function MediaPage() {
-  const session = await getServerSession();
+  const session = await getServerSession(authOptions);
   if (!session) redirect("/admin/login");
 
   await connectToDatabase();
@@ -22,3 +23,4 @@ export default async function MediaPage() {
     </div>
   );
 }
+

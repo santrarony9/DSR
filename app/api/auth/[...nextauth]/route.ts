@@ -4,7 +4,7 @@ import connectToDatabase from "@/lib/db";
 import Admin from "@/lib/models/Admin";
 import bcrypt from "bcryptjs";
 
-const handler = NextAuth({
+export const authOptions = {
   providers: [
     CredentialsProvider({
       name: "Credentials",
@@ -26,8 +26,11 @@ const handler = NextAuth({
       }
     })
   ],
-  session: { strategy: "jwt" },
+  session: { strategy: "jwt" as any },
   pages: { signIn: "/admin/login" },
-});
+  secret: process.env.NEXTAUTH_SECRET || "dsr_fallback_secret_2026_super_secure",
+};
+
+const handler = NextAuth(authOptions);
 
 export { handler as GET, handler as POST };

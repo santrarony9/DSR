@@ -1,4 +1,5 @@
 import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
 import connectToDatabase from "@/lib/db";
 import Category from "@/lib/models/Category";
@@ -6,7 +7,7 @@ import Media from "@/lib/models/Media";
 import Link from "next/link";
 
 export default async function AdminDashboard() {
-  const session = await getServerSession();
+  const session = await getServerSession(authOptions);
   if (!session) {
     redirect("/admin/login");
   }
@@ -35,3 +36,4 @@ export default async function AdminDashboard() {
     </div>
   );
 }
+
