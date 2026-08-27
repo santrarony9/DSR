@@ -2,9 +2,10 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { aboutPageContent, stats } from '@/lib/data';
-import { Target, Heart, Lightbulb, ShieldCheck, ArrowRight, Award, Star } from 'lucide-react';
+import { Target, Heart, Lightbulb, ShieldCheck, ArrowRight, Award, Star, Quote } from 'lucide-react';
+import { useRef } from 'react';
 
 const iconMap = {
   "Passion for Perfection": Target,
@@ -14,6 +15,15 @@ const iconMap = {
 };
 
 export default function AboutClient({ settings }: { settings?: any }) {
+  const containerRef = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"]
+  });
+
+  const y1 = useTransform(scrollYProgress, [0, 1], [0, 200]);
+  const y2 = useTransform(scrollYProgress, [0, 1], [0, -200]);
+
   // Extract Founders from Settings, with fallbacks
   const founder1 = {
     name: settings?.founder1Name || "Dipankar Ganguly",
@@ -32,188 +42,252 @@ export default function AboutClient({ settings }: { settings?: any }) {
   };
 
   return (
-    <div className="flex flex-col min-h-screen">
-      {/* Hero Section */}
-      <section className="relative pt-40 pb-32 px-4 sm:px-6 lg:px-8 text-center overflow-hidden flex flex-col justify-center bg-[var(--color-primary)]">
-        <div className="absolute inset-0 bg-[url('/images/about/why-img.webp')] bg-cover bg-center opacity-10 mix-blend-overlay"></div>
-        <div className="absolute inset-0 bg-gradient-to-b from-[var(--color-primary)]/80 to-[var(--color-primary)]"></div>
-        
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="relative z-10 max-w-5xl mx-auto"
-        >
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 border border-white/20 text-[#C8A96E] font-medium text-sm tracking-widest uppercase mb-8">
-            <Star size={16} className="fill-current" /> Est. 2000
-          </div>
-          <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold font-heading mb-6 text-white tracking-tight">
-            {aboutPageContent.heading}
-          </h1>
-          <p className="text-xl md:text-2xl text-[#FAFAF5]/80 font-light max-w-3xl mx-auto leading-relaxed">
+    <div className="flex flex-col min-h-screen bg-[var(--color-primary)] text-white" ref={containerRef}>
+      {/* Creative Hero Section */}
+      <section className="relative min-h-[80vh] flex items-center justify-center overflow-hidden">
+        {/* Animated background blobs */}
+        <motion.div 
+          animate={{ rotate: 360 }}
+          transition={{ duration: 150, repeat: Infinity, ease: "linear" }}
+          className="absolute -top-[20%] -left-[10%] w-[60vw] h-[60vw] rounded-full bg-[#C8A96E]/10 blur-[120px]"
+        />
+        <motion.div 
+          animate={{ rotate: -360 }}
+          transition={{ duration: 120, repeat: Infinity, ease: "linear" }}
+          className="absolute -bottom-[20%] -right-[10%] w-[50vw] h-[50vw] rounded-full bg-white/5 blur-[100px]"
+        />
+
+        <div className="relative z-10 container mx-auto px-4 pt-32 pb-20 text-center">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1, type: "spring" }}
+            className="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-[#1a1a1a]/80 backdrop-blur-md border border-[#C8A96E]/30 text-[#C8A96E] font-medium tracking-[0.2em] uppercase mb-10 shadow-[0_0_30px_rgba(200,169,110,0.2)]"
+          >
+            <Star size={16} className="fill-[#C8A96E]" /> Est. 2000
+          </motion.div>
+          
+          <motion.h1 
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="text-6xl md:text-7xl lg:text-8xl font-bold font-heading mb-8 tracking-tight"
+          >
+            Crafting <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#C8A96E] to-[#E3CBA3] italic font-serif">Timeless</span><br/>Memories
+          </motion.h1>
+          
+          <motion.p 
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+            className="text-xl md:text-2xl text-white/60 font-light max-w-3xl mx-auto leading-relaxed"
+          >
             {aboutPageContent.subheading}
-          </p>
+          </motion.p>
+        </div>
+        
+        {/* Floating elements */}
+        <motion.div style={{ y: y1 }} className="absolute left-10 top-1/4 hidden lg:block opacity-40 mix-blend-screen">
+          <Image src="/images/misc/wedding-icon.png" width={100} height={100} alt="decor" className="invert" />
+        </motion.div>
+        <motion.div style={{ y: y2 }} className="absolute right-10 bottom-1/4 hidden lg:block opacity-40 mix-blend-screen">
+          <Image src="/images/misc/event-icon.png" width={120} height={120} alt="decor" className="invert" />
         </motion.div>
       </section>
 
-      {/* Story Section */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8 bg-white relative">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-          <motion.div
-            initial={{ opacity: 0, x: -40 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="space-y-8"
-          >
-            <div>
-              <h2 className="text-4xl md:text-5xl font-light font-heading text-slate-900 mb-6">
-                Our <span className="gold-gradient-text font-bold">Story</span>
-              </h2>
-              <div className="w-20 h-1 bg-[#C8A96E]"></div>
-            </div>
-            
-            <div className="space-y-6 text-slate-600 text-lg leading-relaxed">
-              {aboutPageContent.story.map((paragraph, index) => (
-                <p key={index}>{paragraph}</p>
-              ))}
-            </div>
-            
-            <div className="flex items-center gap-4 pt-4">
-              <div className="w-16 h-16 rounded-full bg-[#F5F0EB] flex items-center justify-center">
-                <Award className="text-[#C8A96E]" size={32} />
+      {/* Modern Story Section */}
+      <section className="py-32 px-4 sm:px-6 lg:px-8 bg-white text-[var(--color-primary)] relative rounded-t-[3rem] -mt-10 z-20">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
+            {/* Collage Left */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.8 }}
+              className="lg:col-span-5 relative h-[600px] w-full"
+            >
+              <div className="absolute inset-0 rounded-[3rem] overflow-hidden bg-[#F5F0EB]">
+                <Image
+                  src="/images/about/hm-abt-img.webp"
+                  alt="DSR Event Planner Story"
+                  fill
+                  className="object-cover hover:scale-110 transition-transform duration-1000"
+                />
               </div>
-              <div>
-                <div className="text-2xl font-bold text-slate-900">25+ Years</div>
-                <div className="text-slate-500 font-medium">Of Excellence</div>
-              </div>
-            </div>
-          </motion.div>
+              <motion.div 
+                initial={{ opacity: 0, x: -50 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.5, duration: 0.8 }}
+                className="absolute -bottom-10 -right-10 bg-[var(--color-primary)] text-white p-8 rounded-3xl shadow-2xl max-w-[250px] border border-white/10 hidden md:block"
+              >
+                <Award className="text-[#C8A96E] mb-4" size={40} />
+                <div className="text-3xl font-bold font-heading mb-1">25+</div>
+                <div className="text-sm text-[#C8A96E] uppercase tracking-widest">Years of Trust</div>
+              </motion.div>
+            </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0, x: 40 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="relative h-[600px] rounded-bl-[100px] rounded-tr-[100px] overflow-hidden shadow-2xl border-8 border-[#F5F0EB]"
-          >
-            <Image
-              src="/images/about/hm-abt-img.webp"
-              alt="DSR Event Planner Team"
-              fill
-              className="object-cover"
-            />
-          </motion.div>
+            {/* Text Right */}
+            <motion.div
+              initial={{ opacity: 0, x: 50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.8 }}
+              className="lg:col-span-7 lg:pl-10 space-y-8"
+            >
+              <div className="flex items-center gap-4 mb-4">
+                <span className="w-16 h-[1px] bg-[#C8A96E]"></span>
+                <span className="text-[#C8A96E] font-bold tracking-widest uppercase">The Beginning</span>
+              </div>
+              <h2 className="text-4xl md:text-5xl font-light font-heading text-slate-900 leading-tight">
+                From a small spark to a <br/>
+                <span className="font-bold italic text-[var(--color-primary)] font-serif">grand legacy.</span>
+              </h2>
+              
+              <div className="space-y-6 text-slate-600 text-lg leading-relaxed relative">
+                <Quote className="absolute -top-6 -left-6 text-[#F5F0EB] w-20 h-20 -z-10 transform rotate-180" />
+                {aboutPageContent.story.map((paragraph, index) => (
+                  <p key={index}>{paragraph}</p>
+                ))}
+              </div>
+            </motion.div>
+          </div>
         </div>
       </section>
 
-      {/* Founders Section */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8 bg-[#F5F0EB] relative">
+      {/* Creative Founders Section */}
+      <section className="py-32 px-4 sm:px-6 lg:px-8 bg-[#FAFAF5] text-[var(--color-primary)] relative">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-light font-heading text-slate-900 mb-4">
-              Meet Our <span className="gold-gradient-text font-bold">Founders</span>
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-24"
+          >
+            <h2 className="text-5xl md:text-6xl font-light font-heading mb-6">
+              The <span className="font-bold font-serif italic">Visionaries</span>
             </h2>
-            <p className="text-slate-500 max-w-2xl mx-auto text-lg">The visionaries behind DSR Event Planner who started it all in the year 2000.</p>
-          </div>
+            <p className="text-slate-500 max-w-2xl mx-auto text-xl font-light">The creative minds who built DSR Event Planner.</p>
+          </motion.div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-5xl mx-auto">
+          <div className="flex flex-col gap-24 max-w-5xl mx-auto">
             {/* Founder 1 */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="group text-center bg-white p-10 rounded-3xl shadow-sm hover:shadow-2xl transition-all duration-500 border border-white/50"
-            >
-              <div className="relative w-40 h-40 mx-auto mb-8 rounded-full p-2 bg-gradient-to-br from-[#C8A96E] to-[#9c7f46] shadow-xl group-hover:scale-105 transition-transform duration-500">
-                <div className="w-full h-full bg-[var(--color-primary)] rounded-full overflow-hidden flex items-center justify-center relative border-4 border-white">
+            <div className="flex flex-col md:flex-row items-center gap-12 group">
+              <motion.div
+                initial={{ opacity: 0, x: -50 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8 }}
+                className="w-full md:w-1/3 relative"
+              >
+                <div className="aspect-[4/5] rounded-[2rem] overflow-hidden bg-[var(--color-primary)] relative shadow-2xl">
                   {founder1.image ? (
-                    <img src={founder1.image} alt={founder1.name} className="w-full h-full object-cover" />
+                    <img src={founder1.image} alt={founder1.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                   ) : (
-                    <span className="text-[#C8A96E] text-4xl font-bold font-heading">{founder1.initials}</span>
+                    <div className="w-full h-full flex items-center justify-center text-7xl text-[#C8A96E] font-heading font-bold">{founder1.initials}</div>
                   )}
+                  <div className="absolute inset-0 ring-1 ring-inset ring-white/20 rounded-[2rem]"></div>
                 </div>
-              </div>
-              <h3 className="text-3xl font-bold font-heading text-slate-900 mb-2">{founder1.name}</h3>
-              <p className="text-[#C8A96E] font-bold mb-6 tracking-widest uppercase text-xs">{founder1.role}</p>
-              <p className="text-slate-600 leading-relaxed">
-                {founder1.bio}
-              </p>
-            </motion.div>
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0, x: 50 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+                className="w-full md:w-2/3 space-y-6"
+              >
+                <h3 className="text-4xl md:text-5xl font-bold font-heading">{founder1.name}</h3>
+                <div className="inline-block px-4 py-1 border border-[#C8A96E] text-[#C8A96E] rounded-full text-sm font-bold tracking-widest uppercase">{founder1.role}</div>
+                <p className="text-slate-600 text-xl leading-relaxed font-light">
+                  {founder1.bio}
+                </p>
+              </motion.div>
+            </div>
 
             {/* Founder 2 */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="group text-center bg-white p-10 rounded-3xl shadow-sm hover:shadow-2xl transition-all duration-500 border border-white/50"
-            >
-              <div className="relative w-40 h-40 mx-auto mb-8 rounded-full p-2 bg-gradient-to-br from-[#C8A96E] to-[#9c7f46] shadow-xl group-hover:scale-105 transition-transform duration-500">
-                <div className="w-full h-full bg-[var(--color-primary)] rounded-full overflow-hidden flex items-center justify-center relative border-4 border-white">
+            <div className="flex flex-col md:flex-row-reverse items-center gap-12 group">
+              <motion.div
+                initial={{ opacity: 0, x: 50 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8 }}
+                className="w-full md:w-1/3 relative"
+              >
+                <div className="aspect-[4/5] rounded-[2rem] overflow-hidden bg-[var(--color-primary)] relative shadow-2xl">
                   {founder2.image ? (
-                    <img src={founder2.image} alt={founder2.name} className="w-full h-full object-cover" />
+                    <img src={founder2.image} alt={founder2.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                   ) : (
-                    <span className="text-[#C8A96E] text-4xl font-bold font-heading">{founder2.initials}</span>
+                    <div className="w-full h-full flex items-center justify-center text-7xl text-[#C8A96E] font-heading font-bold">{founder2.initials}</div>
                   )}
+                  <div className="absolute inset-0 ring-1 ring-inset ring-white/20 rounded-[2rem]"></div>
                 </div>
-              </div>
-              <h3 className="text-3xl font-bold font-heading text-slate-900 mb-2">{founder2.name}</h3>
-              <p className="text-[#C8A96E] font-bold mb-6 tracking-widest uppercase text-xs">{founder2.role}</p>
-              <p className="text-slate-600 leading-relaxed">
-                {founder2.bio}
-              </p>
-            </motion.div>
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0, x: -50 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+                className="w-full md:w-2/3 space-y-6 text-left md:text-right"
+              >
+                <h3 className="text-4xl md:text-5xl font-bold font-heading">{founder2.name}</h3>
+                <div className="inline-block px-4 py-1 border border-[#C8A96E] text-[#C8A96E] rounded-full text-sm font-bold tracking-widest uppercase">{founder2.role}</div>
+                <p className="text-slate-600 text-xl leading-relaxed font-light">
+                  {founder2.bio}
+                </p>
+              </motion.div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Stats Section */}
-      <section className="bg-[var(--color-primary)] text-white py-20 px-4 sm:px-6 lg:px-8 border-y border-white/10">
-        <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-12 text-center">
+      {/* Cinematic Stats Section */}
+      <section className="bg-[var(--color-primary)] py-32 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+        <div className="absolute inset-0 opacity-5 bg-[url('/images/hero/h2.webp')] bg-cover bg-center bg-fixed"></div>
+        <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-x-8 gap-y-16 text-center relative z-10">
           {stats.map((stat, index) => (
             <motion.div
               key={index}
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
+              transition={{ duration: 0.7, delay: index * 0.15 }}
+              className="relative"
             >
-              <div className="text-5xl md:text-6xl font-bold text-[#C8A96E] mb-4 font-heading">{stat.value}</div>
-              <div className="text-white/80 font-medium uppercase tracking-widest text-sm">{stat.label}</div>
+              <div className="text-6xl md:text-7xl font-bold text-transparent bg-clip-text bg-gradient-to-b from-white to-[#C8A96E] mb-6 font-serif italic">{stat.value}</div>
+              <div className="text-[#C8A96E] font-medium uppercase tracking-[0.2em] text-xs md:text-sm">{stat.label}</div>
             </motion.div>
           ))}
         </div>
       </section>
 
-      {/* Values Section */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8 bg-white">
+      {/* Elegant Values Section */}
+      <section className="py-32 px-4 sm:px-6 lg:px-8 bg-white text-[var(--color-primary)]">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-light font-heading text-slate-900 mb-4">
-              Our Core <span className="gold-gradient-text font-bold">Values</span>
+          <div className="text-center mb-20">
+            <h2 className="text-5xl font-light font-heading mb-4">
+              Core <span className="font-bold">Values</span>
             </h2>
-            <p className="text-slate-500 max-w-2xl mx-auto text-lg">The principles that guide every event we plan and every interaction we have with our clients.</p>
+            <div className="w-24 h-[1px] bg-[#C8A96E] mx-auto"></div>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {aboutPageContent.values.map((value, index) => {
               const Icon = iconMap[value.title as keyof typeof iconMap] || Target;
               return (
                 <motion.div
                   key={index}
-                  initial={{ opacity: 0, y: 20 }}
+                  initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="group bg-[#F5F0EB] p-10 rounded-3xl hover:bg-[var(--color-primary)] hover:text-white transition-colors duration-500"
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                  className="bg-[#FAFAF5] p-8 rounded-tr-[3rem] rounded-bl-[3rem] hover:-translate-y-4 transition-transform duration-500 border border-black/5 group"
                 >
-                  <div className="w-16 h-16 bg-white group-hover:bg-[#C8A96E] rounded-full flex items-center justify-center text-[var(--color-primary)] group-hover:text-white mb-8 transition-colors duration-500 shadow-md">
-                    <Icon size={32} />
+                  <div className="mb-8 opacity-40 group-hover:opacity-100 transition-opacity text-[#C8A96E]">
+                    <Icon size={40} strokeWidth={1.5} />
                   </div>
-                  <h3 className="text-2xl font-bold font-heading mb-4 text-slate-900 group-hover:text-white transition-colors">{value.title}</h3>
-                  <p className="text-slate-600 group-hover:text-white/80 leading-relaxed transition-colors">
+                  <h3 className="text-xl font-bold font-heading mb-4 text-slate-900">{value.title}</h3>
+                  <p className="text-slate-500 leading-relaxed font-light text-sm">
                     {value.description}
                   </p>
                 </motion.div>
@@ -221,28 +295,6 @@ export default function AboutClient({ settings }: { settings?: any }) {
             })}
           </div>
         </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8 bg-[url('/images/hero/h1.webp')] bg-cover bg-center bg-fixed relative text-center">
-        <div className="absolute inset-0 bg-black/70"></div>
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="max-w-3xl mx-auto relative z-10"
-        >
-          <h2 className="text-4xl md:text-5xl font-bold font-heading text-white mb-6">Ready to plan your next masterpiece?</h2>
-          <p className="text-xl text-white/80 mb-10 max-w-2xl mx-auto">Let us help you create an unforgettable experience for you and your guests. Excellence is just a click away.</p>
-          <Link 
-            href="/contact"
-            className="inline-flex items-center gap-2 bg-[#C8A96E] hover:bg-white hover:text-slate-900 text-white font-bold py-4 px-10 rounded-full transition-all duration-300 text-lg shadow-[0_0_20px_rgba(200,169,110,0.4)] hover:shadow-[0_0_30px_rgba(255,255,255,0.6)]"
-          >
-            Contact Us Today
-            <ArrowRight size={20} />
-          </Link>
-        </motion.div>
       </section>
     </div>
   );
