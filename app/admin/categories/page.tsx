@@ -13,12 +13,14 @@ export default async function CategoriesPage() {
   const categories = await Category.find({}).sort({ createdAt: -1 }).lean();
 
   return (
-    <div>
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">Categories</h1>
+    <div className="space-y-6">
+      <div>
+        <h1 className="text-3xl font-bold font-heading text-slate-900">Project Albums</h1>
+        <p className="text-slate-500 mt-2">Create albums like "Weddings", "Corporate Events" to organize your photos.</p>
       </div>
-      <CategoryClient initialCategories={JSON.parse(JSON.stringify(categories))} />
+      <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
+        <CategoryClient initialCategories={JSON.parse(JSON.stringify(categories))} />
+      </div>
     </div>
   );
 }
-

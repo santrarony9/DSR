@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Bricolage_Grotesque, Karla } from "next/font/google";
 import "./globals.css";
+import PublicWrapper from "@/components/layout/PublicWrapper";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import WhatsAppWidget from "@/components/shared/WhatsAppWidget";
@@ -22,18 +23,6 @@ export const metadata: Metadata = {
   title: "DSR Event Planner - Best Event Planner in Kolkata",
   description: "DSR Event Planner is the best event planning service in Kolkata. We specialize in weddings, corporate events, and parties.",
   keywords: ["Event Planner", "Kolkata", "Wedding Planner", "Corporate Events", "DSR Event Planner"],
-  openGraph: {
-    title: "DSR Event Planner - Best Event Planner in Kolkata",
-    description: "DSR Event Planner is the best event planning service in Kolkata. We specialize in weddings, corporate events, and parties.",
-    type: "website",
-    locale: "en_IN",
-    siteName: "DSR Event Planner",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "DSR Event Planner - Best Event Planner in Kolkata",
-    description: "DSR Event Planner is the best event planning service in Kolkata.",
-  },
 };
 
 export default function RootLayout({
@@ -46,11 +35,14 @@ export default function RootLayout({
       <body
         className={`${bricolage.variable} ${karla.variable} antialiased bg-[#FAFAF5] text-[#1a1a1a]`}
       >
-        <Header />
-        <main className="min-h-screen">{children}</main>
-        <Footer />
-        <WhatsAppWidget />
-        <ScrollToTop />
+        <PublicWrapper
+          header={<Header />}
+          footer={<Footer />}
+          whatsapp={<WhatsAppWidget />}
+          scrollToTop={<ScrollToTop />}
+        >
+          {children}
+        </PublicWrapper>
       </body>
     </html>
   );

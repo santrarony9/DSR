@@ -15,20 +15,29 @@ export default async function SettingsPage() {
     settings = await Settings.create({ phone: "+91 9831000000", address: "Tollygunge, Kolkata", email: "info@dsreventplanner.com" });
   }
 
-  // Convert to plain object to pass to client component
   const plainSettings = {
     phone: settings.phone,
     address: settings.address,
     email: settings.email,
+    founder1Name: settings.founder1Name,
+    founder1Role: settings.founder1Role,
+    founder1Bio: settings.founder1Bio,
+    founder1Image: settings.founder1Image,
+    founder2Name: settings.founder2Name,
+    founder2Role: settings.founder2Role,
+    founder2Bio: settings.founder2Bio,
+    founder2Image: settings.founder2Image,
   };
 
   return (
-    <div>
-      <h1 className="text-2xl font-bold mb-6">Site Settings</h1>
-      <div className="bg-white p-6 rounded-lg shadow max-w-2xl">
+    <div className="space-y-6">
+      <div>
+        <h1 className="text-3xl font-bold font-heading text-slate-900">Website Settings</h1>
+        <p className="text-slate-500 mt-2">Update your contact information and founder details here.</p>
+      </div>
+      <div className="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 max-w-4xl">
         <SettingsForm initialData={plainSettings} />
       </div>
     </div>
   );
 }
-
