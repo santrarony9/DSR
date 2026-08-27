@@ -7,24 +7,24 @@ const nextConfig: NextConfig = {
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "dsreventplanner.com",
-      },
-      {
-        protocol: "https",
-        hostname: "img.youtube.com",
-      },
-      {
-        protocol: "https",
-        hostname: "*.public.blob.vercel-storage.com",
-      }
+      { protocol: "https", hostname: "dsreventplanner.com" },
+      { protocol: "https", hostname: "img.youtube.com" },
+      { protocol: "https", hostname: "*.public.blob.vercel-storage.com" },
+      { protocol: "http", hostname: "117.252.16.132" },
     ],
+  },
+
+  async rewrites() {
+    return [
+      {
+        source: "/uploads/:path*",
+        destination: "http://117.252.16.132:3000/uploads/:path*",
+      },
+    ];
   },
 
   // Disable x-powered-by header
   poweredByHeader: false,
-
   // Enable compression
   compress: true,
 };
