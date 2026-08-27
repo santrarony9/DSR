@@ -45,10 +45,11 @@ export async function PUT(req: Request) {
     if (body.founder2Bio !== undefined) settings.founder2Bio = body.founder2Bio;
     if (body.founder2Image !== undefined) settings.founder2Image = body.founder2Image;
     
+    if (body.heroImages !== undefined) settings.heroImages = body.heroImages;
+
     await settings.save();
     return NextResponse.json(settings);
   } catch (error) {
     return NextResponse.json({ error: "Failed to update settings" }, { status: 500 });
   }
 }
-

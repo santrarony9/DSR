@@ -15,6 +15,9 @@ const SettingsSchema = new mongoose.Schema({
   founder2Role: { type: String, default: "Co-Founder" },
   founder2Bio: { type: String, default: "Subhadeep brings unparalleled creativity and logistical expertise, ensuring that every event is executed flawlessly." },
   founder2Image: { type: String, default: "" },
+
+  // Hero Images
+  heroImages: [{ url: String, alt: String }]
 }, { timestamps: true });
 
 export default mongoose.models.Settings || mongoose.model("Settings", SettingsSchema);

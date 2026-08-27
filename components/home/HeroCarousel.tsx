@@ -4,12 +4,11 @@ import React from "react";
 import Image from "next/image";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
-import { heroImages } from "@/lib/data";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 
-export default function HeroCarousel() {
+export default function HeroCarousel({ images }: { images: { src: string, alt: string }[] }) {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true }, [
     Autoplay({ delay: 5000, stopOnInteraction: false }),
   ]);
@@ -34,11 +33,13 @@ export default function HeroCarousel() {
     onSelect();
   }, [emblaApi, onSelect]);
 
+  if (!images || images.length === 0) return null;
+
   return (
     <section className="relative w-full h-screen overflow-hidden">
       <div className="h-full relative group" ref={emblaRef}>
         <div className="flex h-full touch-pan-y">
-          {heroImages.map((image, index) => (
+          {images.map((image, index) => (
             <div
               key={index}
               className="relative flex-[0_0_100%] h-full min-w-0"
@@ -99,7 +100,7 @@ export default function HeroCarousel() {
         </button>
 
         <div className="absolute bottom-8 left-0 right-0 flex justify-center gap-3">
-          {heroImages.map((_, index) => (
+          {images.map((_, index) => (
             <button
               key={index}
               onClick={() => emblaApi?.scrollTo(index)}

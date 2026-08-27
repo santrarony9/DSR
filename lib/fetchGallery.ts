@@ -1,7 +1,7 @@
 import connectToDatabase from "./db";
 import Category from "./models/Category";
 import Media from "./models/Media";
-import { galleryCategories as fallbackGallery } from "./data";
+import { galleryCategories as fallbackGallery, heroImages as fallbackHero } from "./data";
 
 export async function getGalleryData() {
   try {
@@ -17,6 +17,9 @@ export async function getGalleryData() {
     const formattedGallery = [];
     
     for (const cat of dbCategories) {
+      // Exclude homepage-hero from the standard projects portfolio
+      if (cat.slug === "homepage-hero") continue;
+
       const mediaFiles = await Media.find({ categoryId: cat._id }).lean();
       
       formattedGallery.push({
@@ -44,5 +47,23 @@ export async function getGalleryData() {
   } catch (error) {
     console.error("Database connection failed, using fallback gallery data", error);
     return fallbackGallery;
+  }
+}
+
+export async function getHeroImages() {
+  try {
+    await connectToDatabase();
+    const heroCat = await Category.findOne({ slug: "homepage-hero" }).lean();
+    if (!heroCat) return fallbackHero;
+
+    const mediaFiles = await Media.find({ categoryId: heroCat._id, type: { $ne: "video" } }).lean();
+    if (!mediaFiles || mediaFiles.length === 0) return fallbackHero;
+
+    return mediaFiles.map((m: any) => ({
+      src: m.url,
+      alt: m.alt || "Hero Image"
+    }));
+  } catch (error) {
+    return fallbackHero;
   }
 }
