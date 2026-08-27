@@ -24,7 +24,7 @@ export default function ProjectsClient({ categories }: { categories: any[] }) {
               onClick={() => setActiveTab(category.id)}
               className={`px-6 py-2.5 rounded-full text-sm font-medium transition-all duration-300 ${
                 activeTab === category.id
-                  ? "bg-[#526354] text-white shadow-md transform scale-105"
+                  ? "bg-[var(--color-primary)] text-white shadow-md transform scale-105"
                   : "bg-white text-slate-600 border border-slate-200 hover:bg-slate-50"
               }`}
             >

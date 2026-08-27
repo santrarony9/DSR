@@ -61,7 +61,7 @@ export default function ServicesGrid() {
                 <p className="text-slate-600 mb-6 line-clamp-3">{service.description}</p>
                 <Link
                   href="/services"
-                  className="inline-flex items-center text-[#526354] font-semibold hover:text-[#C8A96E] transition-colors group/link"
+                  className="inline-flex items-center text-[var(--color-primary)] font-semibold hover:text-[#C8A96E] transition-colors group/link"
                 >
                   Discover More 
                   <ArrowRight className="ml-2 w-4 h-4 transform group-hover/link:translate-x-1 transition-transform" />

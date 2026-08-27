@@ -64,7 +64,7 @@ export default function AboutSection() {
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-8">
             <Link
               href="/about"
-              className="inline-block bg-[#526354] hover:bg-[#404f42] text-white font-karla font-bold py-4 px-8 rounded-full transition-colors"
+              className="inline-block bg-[var(--color-primary)] hover:bg-[#404f42] text-white font-karla font-bold py-4 px-8 rounded-full transition-colors"
             >
               Learn More
             </Link>

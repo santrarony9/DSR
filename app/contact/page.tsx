@@ -93,7 +93,7 @@ export default function ContactPage() {
   return (
     <>
       {/* Hero Banner */}
-      <section className="bg-[#526354] pt-36 pb-20 md:pb-28">
+      <section className="bg-[var(--color-primary)] pt-36 pb-20 md:pb-28">
         <div className="max-w-7xl mx-auto px-4 text-center">
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
@@ -126,7 +126,7 @@ export default function ContactPage() {
             >
               {isSubmitted ? (
                 <div className="bg-[#F5F0EB] rounded-2xl p-12 text-center">
-                  <CheckCircle className="w-16 h-16 text-[#526354] mx-auto mb-4" />
+                  <CheckCircle className="w-16 h-16 text-[var(--color-primary)] mx-auto mb-4" />
                   <h3 className="text-2xl font-bold font-[family-name:var(--font-heading)] mb-2">
                     Thank You!
                   </h3>
@@ -274,7 +274,7 @@ export default function ContactPage() {
                   key={index}
                   className="bg-[#F5F0EB] rounded-2xl p-6 flex gap-4"
                 >
-                  <div className="w-12 h-12 rounded-full bg-[#526354] flex items-center justify-center flex-shrink-0">
+                  <div className="w-12 h-12 rounded-full bg-[var(--color-primary)] flex items-center justify-center flex-shrink-0">
                     <detail.icon className="w-5 h-5 text-white" />
                   </div>
                   <div>
@@ -302,7 +302,7 @@ export default function ContactPage() {
                       href={url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="w-10 h-10 rounded-full bg-[#526354] flex items-center justify-center text-white hover:bg-[#C8A96E] transition"
+                      className="w-10 h-10 rounded-full bg-[var(--color-primary)] flex items-center justify-center text-white hover:bg-[#C8A96E] transition"
                     >
                       <span className="text-xs font-bold uppercase">
                         {platform[0]}

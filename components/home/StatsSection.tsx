@@ -25,7 +25,7 @@ const itemVariants = {
 
 export default function StatsSection() {
   return (
-    <section className="bg-[#526354] py-16 px-4 sm:px-6 lg:px-8 relative z-20">
+    <section className="bg-[var(--color-primary)] py-16 px-4 sm:px-6 lg:px-8 relative z-20">
       <div className="max-w-7xl mx-auto">
         <motion.div
           variants={containerVariants}

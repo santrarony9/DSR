@@ -75,7 +75,7 @@ export default function GetAFreeQuotePage() {
   return (
     <>
       {/* Hero Banner */}
-      <section className="bg-[#526354] pt-36 pb-20 md:pb-28">
+      <section className="bg-[var(--color-primary)] pt-36 pb-20 md:pb-28">
         <div className="max-w-7xl mx-auto px-4 text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -113,7 +113,7 @@ export default function GetAFreeQuotePage() {
               animate={{ opacity: 1, scale: 1 }}
               className="bg-white rounded-3xl p-12 text-center shadow-lg"
             >
-              <CheckCircle className="w-20 h-20 text-[#526354] mx-auto mb-6" />
+              <CheckCircle className="w-20 h-20 text-[var(--color-primary)] mx-auto mb-6" />
               <h2 className="text-3xl font-bold font-[family-name:var(--font-heading)] mb-3">
                 Thank You!
               </h2>

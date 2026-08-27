@@ -10,7 +10,7 @@ export default function ServicesClient() {
   return (
     <div className="flex flex-col min-h-screen">
       {/* Hero Section */}
-      <section className="bg-[#526354] text-white pt-36 pb-20 px-4 sm:px-6 lg:px-8 text-center relative overflow-hidden flex flex-col justify-center min-h-[40vh]">
+      <section className="bg-[var(--color-primary)] text-white pt-36 pb-20 px-4 sm:px-6 lg:px-8 text-center relative overflow-hidden flex flex-col justify-center min-h-[40vh]">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -94,7 +94,7 @@ export default function ServicesClient() {
           <p className="text-xl text-gray-600 mb-8">Get in touch with us to discuss your upcoming event and get a customized proposal.</p>
           <Link 
             href="/get-a-free-quote"
-            className="inline-flex items-center gap-2 bg-[#526354] hover:bg-[#3f4d41] text-white font-bold py-4 px-8 rounded-full transition-colors text-lg"
+            className="inline-flex items-center gap-2 bg-[var(--color-primary)] hover:bg-[#3f4d41] text-white font-bold py-4 px-8 rounded-full transition-colors text-lg"
           >
             Get A Free Quote
             <ArrowRight size={20} />

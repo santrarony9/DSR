@@ -56,7 +56,7 @@ export default function QuoteClient() {
   return (
     <div className="flex flex-col min-h-screen bg-[#FAFAF5]">
       {/* Hero Section */}
-      <section className="bg-[#526354] text-white py-24 px-4 sm:px-6 lg:px-8 text-center relative flex flex-col justify-center min-h-[30vh]">
+      <section className="bg-[var(--color-primary)] text-white py-24 px-4 sm:px-6 lg:px-8 text-center relative flex flex-col justify-center min-h-[30vh]">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -82,7 +82,7 @@ export default function QuoteClient() {
         >
           {isSuccess ? (
             <div className="text-center py-12">
-              <div className="w-20 h-20 bg-[#eaf4eb] text-[#526354] rounded-full flex items-center justify-center mx-auto mb-6">
+              <div className="w-20 h-20 bg-[#eaf4eb] text-[var(--color-primary)] rounded-full flex items-center justify-center mx-auto mb-6">
                 <CheckCircle2 size={40} />
               </div>
               <h2 className="text-3xl font-bold font-bricolage text-[#1a1a1a] mb-4">Request Received!</h2>
@@ -91,7 +91,7 @@ export default function QuoteClient() {
               </p>
               <Link 
                 href="/"
-                className="inline-flex bg-[#526354] hover:bg-[#3f4d41] text-white font-bold py-3 px-8 rounded-full transition-colors"
+                className="inline-flex bg-[var(--color-primary)] hover:bg-[#3f4d41] text-white font-bold py-3 px-8 rounded-full transition-colors"
               >
                 Return to Home
               </Link>
@@ -217,7 +217,7 @@ export default function QuoteClient() {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full bg-[#526354] hover:bg-[#3f4d41] text-white font-bold py-4 rounded-xl transition-colors disabled:opacity-70 disabled:cursor-not-allowed text-lg shadow-md"
+                className="w-full bg-[var(--color-primary)] hover:bg-[#3f4d41] text-white font-bold py-4 rounded-xl transition-colors disabled:opacity-70 disabled:cursor-not-allowed text-lg shadow-md"
               >
                 {isSubmitting ? 'Submitting Request...' : 'Get My Free Quote'}
               </button>

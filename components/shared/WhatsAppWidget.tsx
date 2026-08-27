@@ -1,14 +1,14 @@
-'use client';
+"use client";
 
-import { MessageCircle } from 'lucide-react';
+import { MessageCircle } from "lucide-react";
 
 export default function WhatsAppWidget() {
   return (
     <a
-      href="https://wa.me/916289380112"
+      href="https://wa.me/919830556659"
       target="_blank"
       rel="noopener noreferrer"
-      className="fixed bottom-6 right-6 z-50 bg-[#25D366] text-white p-4 rounded-full shadow-lg hover:bg-[#1ebd5a] transition-all hover:scale-110 flex items-center justify-center animate-[pulse_2s_infinite]"
+      className="fixed bottom-6 right-6 z-50 btn-gold text-white p-4 rounded-full shadow-2xl hover:scale-110 flex items-center justify-center animate-[pulse_3s_infinite] border-2 border-white/20"
       aria-label="Chat on WhatsApp"
     >
       <MessageCircle size={32} />

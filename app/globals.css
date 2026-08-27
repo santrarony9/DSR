@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 :root {
-  --color-primary: #526354;
+  --color-primary: #183021; /* Deep, rich forest green */
   --color-accent: #C8A96E;
   --color-dark: #1a1a1a;
   --color-light: #FAFAF5;

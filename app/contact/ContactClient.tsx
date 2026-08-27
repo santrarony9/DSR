@@ -56,7 +56,7 @@ export default function ContactClient() {
   return (
     <div className="flex flex-col min-h-screen">
       {/* Hero Section */}
-      <section className="bg-[#526354] text-white py-24 px-4 sm:px-6 lg:px-8 text-center relative flex flex-col justify-center min-h-[30vh]">
+      <section className="bg-[var(--color-primary)] text-white py-24 px-4 sm:px-6 lg:px-8 text-center relative flex flex-col justify-center min-h-[30vh]">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -86,7 +86,7 @@ export default function ContactClient() {
             <h2 className="text-2xl md:text-3xl font-bold font-bricolage text-[#1a1a1a] mb-6">Send us a message</h2>
             
             {isSuccess ? (
-              <div className="bg-[#eaf4eb] text-[#526354] p-6 rounded-xl flex items-start gap-4 mb-8">
+              <div className="bg-[#eaf4eb] text-[var(--color-primary)] p-6 rounded-xl flex items-start gap-4 mb-8">
                 <CheckCircle2 className="shrink-0 mt-0.5" size={24} />
                 <div>
                   <h3 className="font-bold text-lg mb-1">Message Sent Successfully!</h3>
@@ -195,7 +195,7 @@ export default function ContactClient() {
 
             <div className="space-y-6">
               <div className="flex items-start gap-4 p-4 rounded-xl hover:bg-[#F5F0EB] transition-colors">
-                <div className="w-12 h-12 bg-[#526354] rounded-full flex items-center justify-center text-white shrink-0">
+                <div className="w-12 h-12 bg-[var(--color-primary)] rounded-full flex items-center justify-center text-white shrink-0">
                   <Phone size={20} />
                 </div>
                 <div>
@@ -211,7 +211,7 @@ export default function ContactClient() {
               </div>
 
               <div className="flex items-start gap-4 p-4 rounded-xl hover:bg-[#F5F0EB] transition-colors">
-                <div className="w-12 h-12 bg-[#526354] rounded-full flex items-center justify-center text-white shrink-0">
+                <div className="w-12 h-12 bg-[var(--color-primary)] rounded-full flex items-center justify-center text-white shrink-0">
                   <Mail size={20} />
                 </div>
                 <div>
@@ -223,7 +223,7 @@ export default function ContactClient() {
               </div>
 
               <div className="flex items-start gap-4 p-4 rounded-xl hover:bg-[#F5F0EB] transition-colors">
-                <div className="w-12 h-12 bg-[#526354] rounded-full flex items-center justify-center text-white shrink-0">
+                <div className="w-12 h-12 bg-[var(--color-primary)] rounded-full flex items-center justify-center text-white shrink-0">
                   <MapPin size={20} />
                 </div>
                 <div>
@@ -237,7 +237,7 @@ export default function ContactClient() {
               </div>
 
               <div className="flex items-start gap-4 p-4 rounded-xl hover:bg-[#F5F0EB] transition-colors">
-                <div className="w-12 h-12 bg-[#526354] rounded-full flex items-center justify-center text-white shrink-0">
+                <div className="w-12 h-12 bg-[var(--color-primary)] rounded-full flex items-center justify-center text-white shrink-0">
                   <Clock size={20} />
                 </div>
                 <div>
@@ -250,13 +250,13 @@ export default function ContactClient() {
             <div className="pt-8 border-t border-gray-200">
               <h3 className="font-bold text-[#1a1a1a] mb-4">Follow Us</h3>
               <div className="flex gap-4">
-                <Link href={socialLinks.facebook} target="_blank" className="w-10 h-10 bg-[#F5F0EB] text-[#526354] rounded-full flex items-center justify-center hover:bg-[#C8A96E] hover:text-white transition-colors font-bold">
+                <Link href={socialLinks.facebook} target="_blank" className="w-10 h-10 bg-[#F5F0EB] text-[var(--color-primary)] rounded-full flex items-center justify-center hover:bg-[#C8A96E] hover:text-white transition-colors font-bold">
                   FB
                 </Link>
-                <Link href={socialLinks.instagram} target="_blank" className="w-10 h-10 bg-[#F5F0EB] text-[#526354] rounded-full flex items-center justify-center hover:bg-[#C8A96E] hover:text-white transition-colors font-bold">
+                <Link href={socialLinks.instagram} target="_blank" className="w-10 h-10 bg-[#F5F0EB] text-[var(--color-primary)] rounded-full flex items-center justify-center hover:bg-[#C8A96E] hover:text-white transition-colors font-bold">
                   IG
                 </Link>
-                <Link href={socialLinks.youtube} target="_blank" className="w-10 h-10 bg-[#F5F0EB] text-[#526354] rounded-full flex items-center justify-center hover:bg-[#C8A96E] hover:text-white transition-colors font-bold">
+                <Link href={socialLinks.youtube} target="_blank" className="w-10 h-10 bg-[#F5F0EB] text-[var(--color-primary)] rounded-full flex items-center justify-center hover:bg-[#C8A96E] hover:text-white transition-colors font-bold">
                   YT
                 </Link>
               </div>
