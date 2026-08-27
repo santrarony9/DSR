@@ -31,7 +31,7 @@ export default function ServicesGrid() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.1 }}
-              key={service.id}
+              key={index}
               className="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300"
             >
               <div className="relative h-64 overflow-hidden">
@@ -43,11 +43,16 @@ export default function ServicesGrid() {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-60"></div>
                 <div className="absolute bottom-4 left-4 right-4 text-white">
-                  <div className="bg-[#C8A96E] w-12 h-12 rounded-full flex items-center justify-center mb-3 shadow-lg">
-                    {(() => {
-                      const Icon = service.icon;
-                      return <Icon size={24} className="text-white" />;
-                    })()}
+                  <div className="bg-[#C8A96E] w-12 h-12 rounded-full flex items-center justify-center mb-3 shadow-lg relative p-2">
+                    {/* Render the icon image */}
+                    <div className="relative w-full h-full">
+                      <Image 
+                        src={service.icon} 
+                        alt="icon" 
+                        fill
+                        className="object-contain brightness-0 invert" 
+                      />
+                    </div>
                   </div>
                   <h3 className="text-2xl font-bold font-heading">{service.title}</h3>
                 </div>
@@ -55,7 +60,7 @@ export default function ServicesGrid() {
               <div className="p-8">
                 <p className="text-slate-600 mb-6 line-clamp-3">{service.description}</p>
                 <Link
-                  href={`/services/${service.id}`}
+                  href="/services"
                   className="inline-flex items-center text-[#526354] font-semibold hover:text-[#C8A96E] transition-colors group/link"
                 >
                   Discover More 

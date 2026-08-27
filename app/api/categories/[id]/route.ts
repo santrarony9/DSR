@@ -4,20 +4,21 @@ import connectToDatabase from "@/lib/db";
 import Category from "@/lib/models/Category";
 import Media from "@/lib/models/Media";
 
-export async function DELETE(req: Request, { params }: { params: { id: string } }) {
+export async function DELETE(req: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
     const session = await getServerSession();
     if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
+    const { id } = await params;
     await connectToDatabase();
     
     // Check if category has media
-    const mediaCount = await Media.countDocuments({ categoryId: params.id });
+    const mediaCount = await Media.countDocuments({ categoryId: id });
     if (mediaCount > 0) {
       return NextResponse.json({ error: "Cannot delete category with associated media. Delete media first." }, { status: 400 });
     }
 
-    const category = await Category.findByIdAndDelete(params.id);
+    const category = await Category.findByIdAndDelete(id);
     if (!category) return NextResponse.json({ error: "Category not found" }, { status: 404 });
     
     return NextResponse.json({ success: true });
