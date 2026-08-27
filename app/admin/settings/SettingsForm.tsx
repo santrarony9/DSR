@@ -56,9 +56,53 @@ export default function SettingsForm({ initialData }: { initialData: any }) {
         <textarea 
           className="w-full px-3 py-2 border rounded" 
           rows={3}
-          value={formData.address}
+          value={formData.address || ""}
           onChange={(e) => setFormData({ ...formData, address: e.target.value })}
         />
+      </div>
+
+      <div className="pt-6 mt-6 border-t">
+        <h3 className="text-lg font-bold mb-4">About Page: Founder 1 (Dipankar)</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Name</label>
+            <input type="text" className="w-full px-3 py-2 border rounded" value={formData.founder1Name || ""} onChange={(e) => setFormData({ ...formData, founder1Name: e.target.value })} />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Role</label>
+            <input type="text" className="w-full px-3 py-2 border rounded" value={formData.founder1Role || ""} onChange={(e) => setFormData({ ...formData, founder1Role: e.target.value })} />
+          </div>
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700 mb-1">Bio</label>
+          <textarea className="w-full px-3 py-2 border rounded" rows={2} value={formData.founder1Bio || ""} onChange={(e) => setFormData({ ...formData, founder1Bio: e.target.value })} />
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700 mb-1">Image URL <span className="text-gray-400 font-normal">(e.g., https://example.com/image.jpg)</span></label>
+          <input type="text" className="w-full px-3 py-2 border rounded" value={formData.founder1Image || ""} onChange={(e) => setFormData({ ...formData, founder1Image: e.target.value })} />
+        </div>
+      </div>
+
+      <div className="pt-6 mt-6 border-t mb-8">
+        <h3 className="text-lg font-bold mb-4">About Page: Founder 2 (Subhadeep)</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Name</label>
+            <input type="text" className="w-full px-3 py-2 border rounded" value={formData.founder2Name || ""} onChange={(e) => setFormData({ ...formData, founder2Name: e.target.value })} />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Role</label>
+            <input type="text" className="w-full px-3 py-2 border rounded" value={formData.founder2Role || ""} onChange={(e) => setFormData({ ...formData, founder2Role: e.target.value })} />
+          </div>
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700 mb-1">Bio</label>
+          <textarea className="w-full px-3 py-2 border rounded" rows={2} value={formData.founder2Bio || ""} onChange={(e) => setFormData({ ...formData, founder2Bio: e.target.value })} />
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700 mb-1">Image URL <span className="text-gray-400 font-normal">(e.g., https://example.com/image.jpg)</span></label>
+          <input type="text" className="w-full px-3 py-2 border rounded" value={formData.founder2Image || ""} onChange={(e) => setFormData({ ...formData, founder2Image: e.target.value })} />
+        </div>
       </div>
       
       <button 

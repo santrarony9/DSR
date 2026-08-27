@@ -33,6 +33,17 @@ export async function PUT(req: Request) {
     if (body.address !== undefined) settings.address = body.address;
     if (body.email !== undefined) settings.email = body.email;
     
+    // Founders
+    if (body.founder1Name !== undefined) settings.founder1Name = body.founder1Name;
+    if (body.founder1Role !== undefined) settings.founder1Role = body.founder1Role;
+    if (body.founder1Bio !== undefined) settings.founder1Bio = body.founder1Bio;
+    if (body.founder1Image !== undefined) settings.founder1Image = body.founder1Image;
+    
+    if (body.founder2Name !== undefined) settings.founder2Name = body.founder2Name;
+    if (body.founder2Role !== undefined) settings.founder2Role = body.founder2Role;
+    if (body.founder2Bio !== undefined) settings.founder2Bio = body.founder2Bio;
+    if (body.founder2Image !== undefined) settings.founder2Image = body.founder2Image;
+    
     await settings.save();
     return NextResponse.json(settings);
   } catch (error) {
