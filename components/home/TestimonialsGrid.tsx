@@ -1,14 +1,13 @@
 "use client";
 
 import { Star } from "lucide-react";
-import Image from "next/image";
 
 const googleReviews = [
-  { name: "Priya Sharma", text: "DSR Event Planner made my dream wedding come true! The decor was absolutely stunning.", rating: 5, time: "2 months ago" },
-  { name: "Rahul Chatterjee", text: "Very professional team. Handled our corporate event flawlessly from start to finish.", rating: 5, time: "4 months ago" },
-  { name: "Sneha Roy", text: "Best event planner in Kolkata. Their attention to detail is unmatched.", rating: 5, time: "5 months ago" },
-  { name: "Amit Das", text: "I highly recommend them. They took care of everything for my daughter`s birthday.", rating: 4, time: "6 months ago" },
-  { name: "Kavita Singh", text: "The destination wedding in Goa was perfect thanks to DSR. Brilliant execution!", rating: 5, time: "1 year ago" },
+  { name: "Sandip Dey", text: "??? ?????? ???? ??? ????????? ???? ????????, ???????? ??? ?????????? ?? ??? ????? 100 ?? ????? 100 ????? ??????DSR EVENT PLANNER TEAM ?? ???? ??? ???? ????? ????????", rating: 5, time: "5 months ago" },
+  { name: "Zorvien HealthTech", text: "Best event management company in south kolkata. Budget friendly & Personal care.", rating: 5, time: "3 weeks ago" },
+  { name: "KUNDAN POKAR", text: "Best event planner in town all type of service available. Used for my cousin wedding the process and booking was seamless ... quality of food was excellence .. decoration was top notch ..", rating: 5, time: "a year ago" },
+  { name: "Ritika & Souvik", text: "DSR Event Planner managed our wedding perfectly from start to finish. The décor, catering, and overall coordination were beyond our expectations. Truly a stress-free experience.", rating: 5, time: "2 months ago" },
+  { name: "Vikram & Neha", text: "The team`s creative ideas and cooperative nature made our anniversary celebration truly special. They listened to our requirements and delivered more than what we imagined.", rating: 5, time: "6 months ago" },
 ];
 
 export default function TestimonialsGrid() {
@@ -19,7 +18,7 @@ export default function TestimonialsGrid() {
           Client <span className="gold-gradient-text font-bold">Love</span>
         </h2>
         <div className="flex items-center justify-center gap-2 mb-2">
-          <span className="text-xl font-bold">4.9</span>
+          <span className="text-xl font-bold">5.0</span>
           <div className="flex text-yellow-400">
             {[...Array(5)].map((_, i) => <Star key={i} fill="currentColor" size={20} />)}
           </div>
