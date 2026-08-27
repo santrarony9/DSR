@@ -7,7 +7,6 @@ export async function getGalleryData() {
   try {
     await connectToDatabase();
     
-    // Check if we have any categories in DB
     const dbCategories = await Category.find({}).lean();
     
     if (!dbCategories || dbCategories.length === 0) {
@@ -23,14 +22,23 @@ export async function getGalleryData() {
       formattedGallery.push({
         id: cat.slug,
         label: cat.name,
-        images: mediaFiles.map((m: any) => ({
-          src: m.url,
-          alt: m.alt || cat.name
-        }))
+        images: mediaFiles.map((m: any) => {
+          let youtubeId = null;
+          if (m.type === "video" || m.url.includes("youtube.com") || m.url.includes("youtu.be")) {
+            const match = m.url.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([\w-]{11})/);
+            youtubeId = match ? match[1] : null;
+          }
+
+          return {
+            src: m.url,
+            alt: m.alt || cat.name,
+            type: m.type || (youtubeId ? "video" : "image"),
+            youtubeId
+          };
+        })
       });
     }
 
-    // Filter out categories with no images if desired, but for now just return all
     return formattedGallery;
 
   } catch (error) {

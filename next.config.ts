@@ -8,9 +8,17 @@ const nextConfig: NextConfig = {
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     remotePatterns: [
       {
-        protocol: 'https',
-        hostname: 'dsreventplanner.com',
+        protocol: "https",
+        hostname: "dsreventplanner.com",
       },
+      {
+        protocol: "https",
+        hostname: "img.youtube.com",
+      },
+      {
+        protocol: "https",
+        hostname: "*.public.blob.vercel-storage.com",
+      }
     ],
   },
 
