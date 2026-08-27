@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { Trash2, ImagePlus, Video, UploadCloud, Youtube } from "lucide-react";
+import { Trash2, ImagePlus, Video, UploadCloud } from "lucide-react";
 
 export default function MediaClient({ categories, initialMedia }: { categories: any[], initialMedia: any[] }) {
   const [file, setFile] = useState<File | null>(null);
@@ -231,3 +231,4 @@ export default function MediaClient({ categories, initialMedia }: { categories: 
     </div>
   );
 }
+
