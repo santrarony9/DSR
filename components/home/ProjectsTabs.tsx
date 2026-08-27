@@ -13,12 +13,19 @@ export default function ProjectsTabs({ categories }: { categories: any[] }) {
   if (!categories || categories.length === 0) return null;
 
   return (
-    <section className="py-20 bg-white">
+    <section className="py-24 bg-[#FAFAF5]">
       <div className="container mx-auto px-4 md:px-6">
-        <div className="text-center mb-12">
-          <h2 className="text-4xl font-heading font-bold text-slate-900 mb-4">Our Masterpieces</h2>
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-center mb-16"
+        >
+          <h2 className="text-4xl md:text-5xl font-light font-heading text-slate-900 mb-4">
+            Our <span className="gold-gradient-text font-bold">Masterpieces</span>
+          </h2>
           <p className="text-slate-600 max-w-2xl mx-auto">Explore some of the magical moments we have created over the years.</p>
-        </div>
+        </motion.div>
 
         {/* Tabs */}
         <div className="flex flex-wrap justify-center gap-2 md:gap-4 mb-12">
@@ -26,10 +33,10 @@ export default function ProjectsTabs({ categories }: { categories: any[] }) {
             <button
               key={category.id}
               onClick={() => setActiveTab(category.id)}
-              className={`px-6 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+              className={`px-8 py-3 rounded-full text-sm font-medium transition-all duration-300 ${
                 activeTab === category.id
                   ? "bg-[#526354] text-white shadow-md transform scale-105"
-                  : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                  : "bg-white border border-slate-200 text-slate-600 hover:bg-slate-100"
               }`}
             >
               {category.label}
@@ -46,12 +53,12 @@ export default function ProjectsTabs({ categories }: { categories: any[] }) {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.4 }}
-              className="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6"
+              className="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6 gallery-container"
             >
               {activeCategory?.images.map((img: any, idx: number) => (
                 <div
                   key={idx}
-                  className="relative overflow-hidden rounded-xl break-inside-avoid group cursor-pointer"
+                  className="gallery-item relative overflow-hidden rounded-2xl break-inside-avoid group cursor-pointer shadow-sm hover:shadow-xl"
                   onMouseEnter={() => setHoveredImage(idx)}
                   onMouseLeave={() => setHoveredImage(null)}
                 >
@@ -66,8 +73,8 @@ export default function ProjectsTabs({ categories }: { categories: any[] }) {
                   />
                   
                   {/* Overlay */}
-                  <div className={`absolute inset-0 bg-black/40 transition-opacity duration-300 flex items-center justify-center ${hoveredImage === idx ? "opacity-100" : "opacity-0"}`}>
-                    <span className="text-white font-medium px-4 py-2 border-2 border-white/50 rounded-full backdrop-blur-sm">
+                  <div className={`absolute inset-0 bg-black/30 backdrop-blur-[2px] transition-all duration-500 flex items-center justify-center ${hoveredImage === idx ? "opacity-100" : "opacity-0"}`}>
+                    <span className="text-white font-medium px-6 py-3 border border-white/50 rounded-full bg-white/10 backdrop-blur-md hover:bg-white hover:text-black transition-colors">
                       View Project
                     </span>
                   </div>

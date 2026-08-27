@@ -1,89 +1,67 @@
-'use client';
+"use client";
 
-import { motion } from 'framer-motion';
-import Image from 'next/image';
-import Link from 'next/link';
-import { Leaf } from 'lucide-react';
-import { services } from '@/lib/data';
-
-const containerVariants = {
-  hidden: {},
-  visible: {
-    transition: {
-      staggerChildren: 0.2,
-    },
-  },
-};
-
-const cardVariants = {
-  hidden: { opacity: 0, y: 30 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.6,
-    },
-  },
-};
+import Image from "next/image";
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
+import { services } from "@/lib/data";
+import { motion } from "framer-motion";
 
 export default function ServicesGrid() {
-  // Take only first 3 services for homepage
-  const homeServices = services.slice(0, 3);
-
   return (
-    <section className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto bg-[#FAFAF5]">
-      <div className="text-center mb-16">
-        <div className="flex items-center justify-center gap-2 mb-4">
-          <Leaf className="w-5 h-5 text-[#C8A96E]" />
-          <span className="font-karla text-[#C8A96E] font-bold tracking-wider uppercase text-sm">
-            Our Services
-          </span>
-        </div>
-        <h2 className="font-bricolage text-[#1a1a1a] text-4xl md:text-5xl font-bold max-w-3xl mx-auto leading-tight">
-          Comprehensive solutions designed to meet your every need.
-        </h2>
-      </div>
-
-      <motion.div
-        variants={containerVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: '-100px' }}
-        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12"
-      >
-        {homeServices.map((service, index) => (
-          <motion.div
-            key={index}
-            variants={cardVariants}
-            className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col group"
-          >
-            <div className="relative h-[280px] w-[calc(100%-2rem)] overflow-hidden rounded-t-[200px] rounded-b-none mx-auto mt-4">
-              <Image
-                src={service.image}
-                alt={service.title}
-                fill
-                className="object-cover group-hover:scale-110 transition-transform duration-700 ease-in-out"
-              />
-            </div>
-            <div className="p-8 flex-grow text-center">
-              <h3 className="font-bricolage text-2xl font-bold text-[#1a1a1a] mb-4">
-                {service.title}
-              </h3>
-              <p className="font-karla text-gray-600 line-clamp-3">
-                {service.description}
-              </p>
-            </div>
-          </motion.div>
-        ))}
-      </motion.div>
-
-      <div className="text-center">
-        <Link
-          href="/services"
-          className="inline-block bg-[#1a1a1a] hover:bg-[#526354] text-white font-karla font-bold py-4 px-10 rounded-full transition-colors"
+    <section className="py-24 bg-[#F5F0EB]">
+      <div className="container mx-auto px-4 md:px-6">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-center max-w-3xl mx-auto mb-16"
         >
-          Explore Our Services
-        </Link>
+          <h2 className="text-4xl md:text-5xl font-light font-heading text-slate-900 mb-6">
+            Bespoke <span className="gold-gradient-text font-bold">Services</span>
+          </h2>
+          <p className="text-lg text-slate-600">
+            From intimate gatherings to grand celebrations, we provide comprehensive event planning services tailored to your unique vision.
+          </p>
+        </motion.div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {services.map((service, index) => (
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.1 }}
+              key={service.id}
+              className="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300"
+            >
+              <div className="relative h-64 overflow-hidden">
+                <Image
+                  src={service.image}
+                  alt={service.title}
+                  fill
+                  className="object-cover transition-transform duration-700 group-hover:scale-110"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-60"></div>
+                <div className="absolute bottom-4 left-4 right-4 text-white">
+                  <div className="bg-[#C8A96E] w-12 h-12 rounded-full flex items-center justify-center mb-3 shadow-lg">
+                    <service.icon size={24} className="text-white" />
+                  </div>
+                  <h3 className="text-2xl font-bold font-heading">{service.title}</h3>
+                </div>
+              </div>
+              <div className="p-8">
+                <p className="text-slate-600 mb-6 line-clamp-3">{service.description}</p>
+                <Link
+                  href={`/services/${service.id}`}
+                  className="inline-flex items-center text-[#526354] font-semibold hover:text-[#C8A96E] transition-colors group/link"
+                >
+                  Discover More 
+                  <ArrowRight className="ml-2 w-4 h-4 transform group-hover/link:translate-x-1 transition-transform" />
+                </Link>
+              </div>
+            </motion.div>
+          ))}
+        </div>
       </div>
     </section>
   );
