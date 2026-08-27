@@ -21,13 +21,19 @@ async function seed() {
   const Category = mongoose.models.Category || mongoose.model("Category", CategorySchema);
 
   // Seed Admin
-  const adminExists = await Admin.findOne({ email: "admin@dsreventplanner.com" });
+  const adminEmail = "dsrevent06@gmail.com";
+  const adminPassword = "9830556659";
+  
+  const adminExists = await Admin.findOne({ email: adminEmail });
   if (!adminExists) {
-    const hashedPassword = await bcrypt.hash("admin123", 10);
-    await Admin.create({ email: "admin@dsreventplanner.com", password: hashedPassword });
-    console.log("Created admin user: admin@dsreventplanner.com / admin123");
+    const hashedPassword = await bcrypt.hash(adminPassword, 10);
+    await Admin.create({ email: adminEmail, password: hashedPassword });
+    console.log(`Created admin user: ${adminEmail}`);
   } else {
-    console.log("Admin user already exists");
+    // If it exists but we want to update the password to ensure it matches
+    const hashedPassword = await bcrypt.hash(adminPassword, 10);
+    await Admin.updateOne({ email: adminEmail }, { password: hashedPassword });
+    console.log(`Updated admin user password for: ${adminEmail}`);
   }
 
   // Seed Categories
