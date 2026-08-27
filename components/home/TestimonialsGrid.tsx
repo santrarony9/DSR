@@ -1,16 +1,16 @@
-"use client";
+﻿"use client";
 
 import { Star } from "lucide-react";
 
 const googleReviews = [
-  { name: "Sandip Dey", text: "??? ?????? ???? ??? ????????? ???? ????????, ???????? ??? ?????????? ?? ??? ????? 100 ?? ????? 100 ????? ??????DSR EVENT PLANNER TEAM ?? ???? ??? ???? ????? ????????", rating: 5, time: "5 months ago" },
+  { name: "Sandip Dey", text: "খুব সুন্দর একটি কাজ হয়েছে।আমি খুবই সন্তুষ্ট, ডেকোরেশন এবং খাওয়াদাওয়া সব দিক দিয়েই 100 এর মধ্যে 100 শতাংশ হয়েছে।DSR EVENT PLANNER TEAM কে আমার তরফ থেকে অজস্র ধন্যবাদ।", rating: 5, time: "5 months ago" },
   { name: "Zorvien HealthTech", text: "Best event management company in south kolkata. Budget friendly & Personal care.", rating: 5, time: "3 weeks ago" },
   { name: "KUNDAN POKAR", text: "Best event planner in town all type of service available. Used for my cousin wedding the process and booking was seamless ... quality of food was excellence .. decoration was top notch ..", rating: 5, time: "a year ago" },
-  { name: "Priya M.", text: "Our company`s annual event was handled seamlessly by DSR. From stage setup to catering and AV support, everything was perfect. Highly reliable team.", rating: 5, time: "3 months ago" },
-  { name: "Ritika & Souvik", text: "DSR Event Planner managed our wedding perfectly from start to finish. The d�cor, catering, and overall coordination were beyond our expectations. Truly a stress-free experience.", rating: 5, time: "2 months ago" },
-  { name: "Vikram & Neha", text: "The team`s creative ideas and cooperative nature made our anniversary celebration truly special. They listened to our requirements and delivered more than what we imagined.", rating: 5, time: "6 months ago" },
+  { name: "Priya M.", text: "Our company's annual event was handled seamlessly by DSR. From stage setup to catering and AV support, everything was perfect. Highly reliable team.", rating: 5, time: "3 months ago" },
+  { name: "Ritika & Souvik", text: "DSR Event Planner managed our wedding perfectly from start to finish. The décor, catering, and overall coordination were beyond our expectations. Truly a stress-free experience.", rating: 5, time: "2 months ago" },
+  { name: "Vikram & Neha", text: "The team's creative ideas and cooperative nature made our anniversary celebration truly special. They listened to our requirements and delivered more than what we imagined.", rating: 5, time: "6 months ago" },
   { name: "Ananya D.", text: "Their team was extremely professional and ensured our event was executed within our budget without compromising on quality. We were impressed by their time management and attention to detail.", rating: 5, time: "8 months ago" },
-  { name: "Rohit S.", text: "They organized my child`s birthday party beautifully, handling everything from decorations to entertainment. It was a memorable day for our family and guests.", rating: 5, time: "10 months ago" },
+  { name: "Rohit S.", text: "They organized my child's birthday party beautifully, handling everything from decorations to entertainment. It was a memorable day for our family and guests.", rating: 5, time: "10 months ago" },
   { name: "Mayur Mukherjee", text: "Very nice Highly satisfied yours service.", rating: 5, time: "a month ago" },
 ];
 
@@ -30,7 +30,6 @@ export default function TestimonialsGrid() {
         <p className="text-slate-500">Based on Google Reviews</p>
       </div>
 
-      {/* Marquee Wrapper */}
       <div className="relative w-full flex overflow-x-hidden group">
         <div className="animate-marquee flex gap-6 px-3">
           {[...googleReviews, ...googleReviews].map((review, idx) => (
@@ -48,7 +47,6 @@ export default function TestimonialsGrid() {
                     <p className="text-xs text-slate-500">{review.time}</p>
                   </div>
                 </div>
-                {/* Google "G" Logo SVG */}
                 <svg className="w-5 h-5" viewBox="0 0 24 24">
                   <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
                   <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
@@ -67,7 +65,6 @@ export default function TestimonialsGrid() {
         </div>
       </div>
       
-      {/* Gradient Fades for Marquee */}
       <div className="absolute top-0 left-0 w-24 h-full bg-gradient-to-r from-white to-transparent z-10 pointer-events-none"></div>
       <div className="absolute top-0 right-0 w-24 h-full bg-gradient-to-l from-white to-transparent z-10 pointer-events-none"></div>
     </section>
