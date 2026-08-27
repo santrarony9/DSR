@@ -46,3 +46,7 @@ next-env.d.ts
 !postcss.config.js
 !tailwind.config.js
 .vercel
+
+vps-secrets.txt
+
+!ecosystem.config.js
