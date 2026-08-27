@@ -85,14 +85,6 @@ export default function AboutClient({ settings }: { settings?: any }) {
             {aboutPageContent.subheading}
           </motion.p>
         </div>
-        
-        {/* Floating elements */}
-        <motion.div style={{ y: y1 }} className="absolute left-10 top-1/4 hidden lg:block opacity-40 mix-blend-screen">
-          <Image src="/images/misc/wedding-icon.png" width={100} height={100} alt="decor" className="invert" />
-        </motion.div>
-        <motion.div style={{ y: y2 }} className="absolute right-10 bottom-1/4 hidden lg:block opacity-40 mix-blend-screen">
-          <Image src="/images/misc/event-icon.png" width={120} height={120} alt="decor" className="invert" />
-        </motion.div>
       </section>
 
       {/* Modern Story Section */}

@@ -274,3 +274,12 @@ export const servicesPageContent = {
     },
   ],
 };
+
+export const eventTypes = [
+  "Wedding",
+  "Corporate Event",
+  "Birthday Party",
+  "Social Gathering",
+  "Destination Wedding",
+  "Other"
+];
