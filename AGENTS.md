@@ -44,3 +44,13 @@ The client is non-technical. The `/admin` dashboard must be extremely simple and
 - **NEVER** overwrite `ecosystem.config.js` or the deployment scripts.
 - **ALWAYS** check file sizes on uploads to prevent crashing the server (5MB limit is strictly enforced).
 - **ALWAYS** maintain the dark luxury aesthetic.
+
+
+## Hosting Architecture (CRITICAL)
+- **Split Architecture:** The project uses a split deployment model.
+- **Frontend (Public Site):** Hosted on **Vercel** (dsreventplanner.com).
+- **Backend (Admin Panel):** Hosted on **VPS** (117.252.16.132:3000).
+- **Image Storage:** Images are uploaded ONLY via the VPS Admin panel and saved to the VPS local file system (using \s/promises\).
+- **Vercel Proxy Rewrite:** \
+ext.config.ts\ contains a rewrite that proxies \/uploads/*\ requests from Vercel to the VPS (\http://117.252.16.132:3000/uploads/*\).
+- **Rule:** NEVER attempt to build image upload functionality meant to be executed on Vercel. Vercel blocks local file saving. All admin operations must be performed on the VPS IP.
