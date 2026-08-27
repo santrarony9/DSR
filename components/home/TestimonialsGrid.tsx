@@ -8,6 +8,9 @@ const googleReviews = [
   { name: "KUNDAN POKAR", text: "Best event planner in town all type of service available. Used for my cousin wedding the process and booking was seamless ... quality of food was excellence .. decoration was top notch ..", rating: 5, time: "a year ago" },
   { name: "Ritika & Souvik", text: "DSR Event Planner managed our wedding perfectly from start to finish. The décor, catering, and overall coordination were beyond our expectations. Truly a stress-free experience.", rating: 5, time: "2 months ago" },
   { name: "Vikram & Neha", text: "The team`s creative ideas and cooperative nature made our anniversary celebration truly special. They listened to our requirements and delivered more than what we imagined.", rating: 5, time: "6 months ago" },
+  { name: "Ananya D.", text: "Their team was extremely professional and ensured our event was executed within our budget without compromising on quality. We were impressed by their time management and attention to detail.", rating: 5, time: "8 months ago" },
+  { name: "Rohit S.", text: "They organized my child`s birthday party beautifully, handling everything from decorations to entertainment. It was a memorable day for our family and guests.", rating: 5, time: "10 months ago" },
+  { name: "Mayur Mukherjee", text: "Very nice Highly satisfied yours service.", rating: 5, time: "a month ago" },
 ];
 
 export default function TestimonialsGrid() {
