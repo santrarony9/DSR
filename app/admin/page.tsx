@@ -28,32 +28,32 @@ export default async function AdminDashboard() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
         
         {/* Step 1 */}
-        <div className="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 flex flex-col relative overflow-hidden group">
+        <Link href="/admin/categories" className="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 flex flex-col relative overflow-hidden group hover:border-[#C8A96E] hover:shadow-md transition-all cursor-pointer block">
           <div className="absolute top-0 right-0 w-32 h-32 bg-[var(--color-primary)]/5 rounded-bl-full -mr-8 -mt-8 transition-transform group-hover:scale-110"></div>
           <FolderHeart size={48} className="text-[#C8A96E] mb-6" strokeWidth={1.5} />
           <h2 className="text-2xl font-bold font-heading mb-2">1. Project Albums</h2>
           <p className="text-slate-500 mb-6 flex-grow">Create and manage your project categories (e.g., "Wedding", "Corporate").</p>
           <div className="flex items-center justify-between">
             <span className="text-3xl font-bold text-slate-900">{totalCategories} <span className="text-lg text-slate-400 font-normal">albums</span></span>
-            <Link href="/admin/categories" className="flex items-center gap-2 text-[var(--color-primary)] font-semibold hover:text-[#C8A96E] transition-colors">
+            <div className="flex items-center gap-2 text-[var(--color-primary)] font-semibold group-hover:text-[#C8A96E] transition-colors">
               Manage Albums <ArrowRight size={18} />
-            </Link>
+            </div>
           </div>
-        </div>
+        </Link>
 
         {/* Step 2 */}
-        <div className="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 flex flex-col relative overflow-hidden group">
+        <Link href="/admin/media" className="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 flex flex-col relative overflow-hidden group hover:border-[#C8A96E] hover:shadow-md transition-all cursor-pointer block">
           <div className="absolute top-0 right-0 w-32 h-32 bg-[var(--color-primary)]/5 rounded-bl-full -mr-8 -mt-8 transition-transform group-hover:scale-110"></div>
           <ImagePlus size={48} className="text-[#C8A96E] mb-6" strokeWidth={1.5} />
           <h2 className="text-2xl font-bold font-heading mb-2">2. Upload Photos</h2>
           <p className="text-slate-500 mb-6 flex-grow">Upload your event photos and assign them to your albums.</p>
           <div className="flex items-center justify-between">
             <span className="text-3xl font-bold text-slate-900">{totalMedia} <span className="text-lg text-slate-400 font-normal">photos</span></span>
-            <Link href="/admin/media" className="flex items-center gap-2 text-[var(--color-primary)] font-semibold hover:text-[#C8A96E] transition-colors">
+            <div className="flex items-center gap-2 text-[var(--color-primary)] font-semibold group-hover:text-[#C8A96E] transition-colors">
               Manage Photos <ArrowRight size={18} />
-            </Link>
+            </div>
           </div>
-        </div>
+        </Link>
       </div>
 
       <div className="mt-8 bg-slate-900 p-8 rounded-2xl text-white flex flex-col sm:flex-row items-center justify-between gap-6">
