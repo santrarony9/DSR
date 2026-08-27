@@ -96,13 +96,14 @@ export default async function Footer() {
         </div>
 
         {/* Bottom Bar - Updated layout so Admin Login doesn't overlap with fixed widgets */}
-        <div className="border-t border-white/20 pt-8 flex flex-col md:flex-row justify-between items-center text-sm opacity-80 space-y-4 md:space-y-0">
+        <div className="border-t border-white/20 pt-8 flex flex-col md:flex-row justify-between items-center text-sm opacity-80 space-y-4 md:space-y-0 pb-4">
           <p>&copy; {new Date().getFullYear()} DSR Event Planner. All rights reserved.</p>
-          <div className="flex flex-col md:flex-row items-center gap-4">
+          <div className="flex flex-col md:flex-row items-center gap-4 pr-0 md:pr-24">
             <p>
               Developed and Maintain by - <a href="#" className="font-semibold hover:text-[#C8A96E] transition-colors">Dreamline Production</a>
             </p>
-            <Link href="/admin/login" className="text-[#FAFAF5] hover:text-[#C8A96E] transition-colors font-medium border border-white/20 hover:border-[#C8A96E] px-4 py-1.5 rounded-full ml-4">
+            <span className="hidden md:inline">&bull;</span>
+            <Link href="/admin/login" className="text-[#FAFAF5] hover:text-[#C8A96E] transition-colors font-medium">
               Admin Login
             </Link>
           </div>
