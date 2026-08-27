@@ -3,11 +3,11 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { Trash2, ImagePlus, Youtube, UploadCloud } from "lucide-react";
+import { Trash2, ImagePlus, Video, UploadCloud } from "lucide-react";
 
 export default function MediaClient({ categories, initialMedia }: { categories: any[], initialMedia: any[] }) {
   const [file, setFile] = useState<File | null>(null);
-  const [youtubeUrl, setYoutubeUrl] = useState("");
+  const [VideoUrl, setVideoUrl] = useState("");
   const [categoryId, setCategoryId] = useState(categories.length > 0 ? categories[0]._id.toString() : "");
   const [loading, setLoading] = useState(false);
   const [uploadType, setUploadType] = useState<"image" | "video">("image");
@@ -23,8 +23,8 @@ export default function MediaClient({ categories, initialMedia }: { categories: 
       return;
     }
     
-    if (uploadType === "video" && !youtubeUrl) {
-      setError("Please enter a YouTube link.");
+    if (uploadType === "video" && !VideoUrl) {
+      setError("Please enter a Video link.");
       return;
     }
 
@@ -38,7 +38,7 @@ export default function MediaClient({ categories, initialMedia }: { categories: 
     if (uploadType === "image" && file) {
       formData.append("file", file);
     } else if (uploadType === "video") {
-      formData.append("youtubeUrl", youtubeUrl);
+      formData.append("VideoUrl", VideoUrl);
     }
 
     const res = await fetch("/api/media", {
@@ -49,7 +49,7 @@ export default function MediaClient({ categories, initialMedia }: { categories: 
     setLoading(false);
     if (res.ok) {
       setFile(null);
-      setYoutubeUrl("");
+      setVideoUrl("");
       router.refresh();
     } else {
       const data = await res.json();
@@ -63,9 +63,9 @@ export default function MediaClient({ categories, initialMedia }: { categories: 
     if (res.ok) router.refresh();
   };
 
-  // Helper to extract YouTube ID
-  const getYouTubeId = (url: string) => {
-    const match = url.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([\w-]{11})/);
+  // Helper to extract Video ID
+  const getVideoId = (url: string) => {
+    const match = url.match(/(?:youtu\.be\/|Video\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([\w-]{11})/);
     return match ? match[1] : null;
   };
 
@@ -92,7 +92,7 @@ export default function MediaClient({ categories, initialMedia }: { categories: 
               onClick={() => setUploadType("video")}
               className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl font-bold transition-all ${uploadType === "video" ? "bg-red-600 text-white shadow-md" : "bg-white text-slate-500 border border-slate-200 hover:bg-slate-50"}`}
             >
-              <Youtube size={18} /> YouTube Video
+              <Video size={18} /> Video Video
             </button>
           </div>
 
@@ -132,13 +132,13 @@ export default function MediaClient({ categories, initialMedia }: { categories: 
               </div>
             ) : (
               <div>
-                <label className="block text-sm font-bold text-slate-700 mb-2 uppercase tracking-wider text-xs">YouTube Link</label>
+                <label className="block text-sm font-bold text-slate-700 mb-2 uppercase tracking-wider text-xs">Video Link</label>
                 <input 
                   type="text" 
-                  placeholder="https://www.youtube.com/watch?v=..."
+                  placeholder="https://www.Video.com/watch?v=..."
                   className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-red-600 focus:ring-1 focus:ring-red-600 outline-none transition bg-white" 
-                  value={youtubeUrl}
-                  onChange={(e) => setYoutubeUrl(e.target.value)}
+                  value={VideoUrl}
+                  onChange={(e) => setVideoUrl(e.target.value)}
                 />
               </div>
             )}
@@ -161,20 +161,20 @@ export default function MediaClient({ categories, initialMedia }: { categories: 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {initialMedia.map((media) => {
           const isVideo = media.type === "video";
-          const ytId = isVideo ? getYouTubeId(media.url) : null;
+          const ytId = isVideo ? getVideoId(media.url) : null;
           
           return (
             <div key={media._id.toString()} className="border rounded-xl overflow-hidden group relative bg-white shadow-sm hover:shadow-md transition-all">
               <div className="aspect-square relative bg-slate-100 flex items-center justify-center">
                 {isVideo && ytId ? (
-                  <img src={`https://img.youtube.com/vi/${ytId}/hqdefault.jpg`} alt="Video Thumbnail" className="w-full h-full object-cover" />
+                  <img src={`https://img.Video.com/vi/${ytId}/hqdefault.jpg`} alt="Video Thumbnail" className="w-full h-full object-cover" />
                 ) : (
                   <Image src={media.url} alt={media.alt || "Media"} fill className="object-cover" />
                 )}
                 
                 {isVideo && (
                   <div className="absolute inset-0 flex items-center justify-center bg-black/30">
-                    <Youtube size={32} className="text-white" />
+                    <Video size={32} className="text-white" />
                   </div>
                 )}
                 

@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { Maximize2, X, Youtube } from "lucide-react";
+import { Maximize2, X, Video } from "lucide-react";
 
 export default function ProjectsClient({ categories }: { categories: any[] }) {
   const [activeTab, setActiveTab] = useState(categories[0]?.id || "");
@@ -45,8 +45,8 @@ export default function ProjectsClient({ categories }: { categories: any[] }) {
               className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
             >
               {activeCategory?.images.map((img: any, idx: number) => {
-                const isVideo = img.type === "video" || !!img.youtubeId;
-                const thumbnailUrl = isVideo && img.youtubeId ? `https://img.youtube.com/vi/${img.youtubeId}/hqdefault.jpg` : img.src;
+                const isVideo = img.type === "video" || !!img.VideoId;
+                const thumbnailUrl = isVideo && img.VideoId ? `https://img.Video.com/vi/${img.VideoId}/hqdefault.jpg` : img.src;
 
                 return (
                   <motion.div
@@ -67,7 +67,7 @@ export default function ProjectsClient({ categories }: { categories: any[] }) {
                     {isVideo && (
                       <div className="absolute inset-0 flex items-center justify-center bg-black/20">
                         <div className="w-16 h-16 rounded-full bg-red-600/90 flex items-center justify-center backdrop-blur-sm shadow-xl">
-                          <Youtube className="text-white w-8 h-8 ml-1" />
+                          <Video className="text-white w-8 h-8 ml-1" />
                         </div>
                       </div>
                     )}
@@ -114,12 +114,12 @@ export default function ProjectsClient({ categories }: { categories: any[] }) {
               className="relative w-full max-w-5xl aspect-[16/9] rounded-2xl overflow-hidden shadow-2xl border-4 border-white/10 bg-black flex items-center justify-center"
               onClick={(e) => e.stopPropagation()}
             >
-              {(selectedMedia.type === "video" || selectedMedia.youtubeId) ? (
+              {(selectedMedia.type === "video" || selectedMedia.VideoId) ? (
                 <iframe 
                   width="100%" 
                   height="100%" 
-                  src={`https://www.youtube.com/embed/${selectedMedia.youtubeId}?autoplay=1`}
-                  title="YouTube video player" 
+                  src={`https://www.Video.com/embed/${selectedMedia.VideoId}?autoplay=1`}
+                  title="Video video player" 
                   frameBorder="0" 
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
                   allowFullScreen
