@@ -1,284 +1,233 @@
 'use client';
 
-import { useState } from 'react';
-import { motion } from 'framer-motion';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import * as z from 'zod';
-import { contactInfo, socialLinks } from '@/lib/constants';
-import { MapPin, Phone, Mail, Clock, CheckCircle2 } from 'lucide-react';
-import Link from 'next/link';
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+import { motion } from "framer-motion";
+import { MapPin, Phone, Mail, Send, CheckCircle2 } from "lucide-react";
+import { eventTypes } from "@/lib/data";
 
 const formSchema = z.object({
-  name: z.string().min(2, 'Name must be at least 2 characters'),
-  email: z.string().email('Please enter a valid email address'),
-  phone: z.string().min(10, 'Please enter a valid phone number'),
-  eventType: z.string().min(1, 'Please select an event type'),
-  eventDate: z.string().min(1, 'Please select a date'),
-  message: z.string().min(10, 'Message must be at least 10 characters'),
+  name: z.string().min(2, "Name is required"),
+  email: z.string().email("Invalid email address"),
+  phone: z.string().min(10, "Valid phone number is required"),
+  eventType: z.string().min(1, "Please select an event type"),
+  eventDate: z.string().optional(),
+  message: z.string().min(10, "Please provide more details about your event"),
 });
 
-type FormData = z.infer<typeof formSchema>;
-
 export default function ContactClient({ settings }: { settings?: any }) {
-  const displayPhone = settings?.phone || contactInfo.phone[0];
-  const displayEmail = settings?.email || contactInfo.email;
-  const displayAddress = settings?.address || contactInfo.fullAddress;
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [serverError, setServerError] = useState("");
 
   const {
     register,
     handleSubmit,
     reset,
-    formState: { errors },
-  } = useForm<FormData>({
+    formState: { errors, isSubmitting },
+  } = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
 
-  const onSubmit = async (data: FormData) => {
-    setIsSubmitting(true);
+  const onSubmit = async (data: z.infer<typeof formSchema>) => {
     try {
-      const response = await fetch('/api/contact', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      setServerError("");
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
-      if (response.ok) {
-        setIsSuccess(true);
-        reset();
-        setTimeout(() => setIsSuccess(false), 5000);
+
+      if (!response.ok) {
+        throw new Error("Failed to send message");
       }
+
+      setIsSuccess(true);
+      reset();
     } catch (error) {
-      console.error('Submission error:', error);
-    } finally {
-      setIsSubmitting(false);
+      setServerError("There was a problem sending your message. Please try again or contact us directly via phone.");
     }
   };
 
+  const contactDetails = [
+    {
+      icon: MapPin,
+      title: "Visit Us",
+      lines: [(settings?.address || "104A/22V Karunamoyee Ghat Road, Kolkata, West Bengal 700082")],
+    },
+    {
+      icon: Phone,
+      title: "Call Us",
+      lines: [(settings?.phone || "+91 98305 56659"), "Mon-Sat: 10AM - 7PM"],
+    },
+    {
+      icon: Mail,
+      title: "Email Us",
+      lines: [(settings?.email || "dsrevent06@gmail.com"), "We reply within 24 hours"],
+    },
+  ];
+
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen bg-[var(--color-primary)] text-white">
       {/* Hero Section */}
-      <section className="bg-[var(--color-primary)] text-white py-24 px-4 sm:px-6 lg:px-8 text-center relative flex flex-col justify-center min-h-[30vh]">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="relative z-10 max-w-4xl mx-auto"
-        >
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold font-bricolage mb-4 text-[#FAFAF5]">
-            Contact Us
+      <section className="relative min-h-[50vh] flex items-center justify-center overflow-hidden">
+        <div className="absolute inset-0 bg-[url('/images/projects/p2.webp')] bg-cover bg-center opacity-10 mix-blend-overlay"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-[var(--color-primary)]/80 to-[var(--color-primary)]"></div>
+        
+        <div className="relative z-10 max-w-5xl mx-auto text-center px-4 pt-32 pb-20">
+          <div className="inline-flex items-center gap-2 px-6 py-2 rounded-full border border-[#C8A96E]/30 text-[#C8A96E] font-medium text-sm tracking-widest uppercase mb-8">
+            Let's Connect
+          </div>
+          <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold font-heading mb-6 tracking-tight">
+            Contact <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#C8A96E] to-[#E3CBA3] italic font-serif">Us</span>
           </h1>
-          <p className="text-xl md:text-2xl text-[#C8A96E] font-medium max-w-2xl mx-auto">
-            Let's plan something extraordinary together
+          <p className="text-xl md:text-2xl text-white/60 font-light max-w-2xl mx-auto leading-relaxed">
+            Ready to plan something extraordinary? Reach out to us and let's turn your vision into reality.
           </p>
-        </motion.div>
-      </section>
-
-      {/* Main Content */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-[#FAFAF5]">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16">
-          
-          {/* Left: Contact Form */}
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6 }}
-            className="bg-white p-8 md:p-10 rounded-2xl shadow-sm"
-          >
-            <h2 className="text-2xl md:text-3xl font-bold font-bricolage text-[#1a1a1a] mb-6">Send us a message</h2>
-            
-            {isSuccess ? (
-              <div className="bg-[#eaf4eb] text-[var(--color-primary)] p-6 rounded-xl flex items-start gap-4 mb-8">
-                <CheckCircle2 className="shrink-0 mt-0.5" size={24} />
-                <div>
-                  <h3 className="font-bold text-lg mb-1">Message Sent Successfully!</h3>
-                  <p>Thank you for reaching out. Our team will get back to you shortly to discuss your event.</p>
-                </div>
-              </div>
-            ) : (
-              <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-                <div>
-                  <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">Full Name *</label>
-                  <input
-                    id="name"
-                    {...register('name')}
-                    className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#C8A96E] focus:border-transparent outline-none transition-all"
-                    placeholder="John Doe"
-                  />
-                  {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>}
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">Email Address *</label>
-                    <input
-                      id="email"
-                      {...register('email')}
-                      className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#C8A96E] focus:border-transparent outline-none transition-all"
-                      placeholder="john@example.com"
-                    />
-                    {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>}
-                  </div>
-                  <div>
-                    <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">Phone Number *</label>
-                    <input
-                      id="phone"
-                      {...register('phone')}
-                      className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#C8A96E] focus:border-transparent outline-none transition-all"
-                      placeholder="+91 98765 43210"
-                    />
-                    {errors.phone && <p className="text-red-500 text-sm mt-1">{errors.phone.message}</p>}
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <label htmlFor="eventType" className="block text-sm font-medium text-gray-700 mb-2">Event Type *</label>
-                    <select
-                      id="eventType"
-                      {...register('eventType')}
-                      className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#C8A96E] focus:border-transparent outline-none transition-all bg-white"
-                    >
-                      <option value="">Select event type</option>
-                      <option value="Wedding">Wedding</option>
-                      <option value="Corporate">Corporate Event</option>
-                      <option value="Birthday">Birthday Party</option>
-                      <option value="Cultural">Cultural Event</option>
-                      <option value="Other">Other</option>
-                    </select>
-                    {errors.eventType && <p className="text-red-500 text-sm mt-1">{errors.eventType.message}</p>}
-                  </div>
-                  <div>
-                    <label htmlFor="eventDate" className="block text-sm font-medium text-gray-700 mb-2">Event Date *</label>
-                    <input
-                      type="date"
-                      id="eventDate"
-                      {...register('eventDate')}
-                      className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#C8A96E] focus:border-transparent outline-none transition-all"
-                    />
-                    {errors.eventDate && <p className="text-red-500 text-sm mt-1">{errors.eventDate.message}</p>}
-                  </div>
-                </div>
-
-                <div>
-                  <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">Your Message *</label>
-                  <textarea
-                    id="message"
-                    {...register('message')}
-                    rows={4}
-                    className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#C8A96E] focus:border-transparent outline-none transition-all resize-none"
-                    placeholder="Tell us about your event vision, requirements, and estimated guest count..."
-                  />
-                  {errors.message && <p className="text-red-500 text-sm mt-1">{errors.message.message}</p>}
-                </div>
-
-                <button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className="w-full bg-[#C8A96E] hover:bg-[#b59862] text-white font-bold py-4 rounded-xl transition-colors disabled:opacity-70 disabled:cursor-not-allowed"
-                >
-                  {isSubmitting ? 'Sending...' : 'Send Message'}
-                </button>
-              </form>
-            )}
-          </motion.div>
-
-          {/* Right: Contact Info */}
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6 }}
-            className="space-y-8"
-          >
-            <div>
-              <h2 className="text-2xl md:text-3xl font-bold font-bricolage text-[#1a1a1a] mb-6">Contact Information</h2>
-              <p className="text-gray-600 mb-8 text-lg">We'd love to hear from you. Reach out to us directly using any of the methods below.</p>
-            </div>
-
-            <div className="space-y-6">
-              <div className="flex items-start gap-4 p-4 rounded-xl hover:bg-[#F5F0EB] transition-colors">
-                <div className="w-12 h-12 bg-[var(--color-primary)] rounded-full flex items-center justify-center text-white shrink-0">
-                  <Phone size={20} />
-                </div>
-                <div>
-                  <h3 className="font-bold text-[#1a1a1a] mb-1">Phone Number</h3>
-                  <div className="text-gray-600 space-y-1">
-                    <p><a href={`tel:${displayPhone}`} className="hover:text-[#C8A96E] transition-colors">{displayPhone}</a></p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-4 p-4 rounded-xl hover:bg-[#F5F0EB] transition-colors">
-                <div className="w-12 h-12 bg-[var(--color-primary)] rounded-full flex items-center justify-center text-white shrink-0">
-                  <Mail size={20} />
-                </div>
-                <div>
-                  <h3 className="font-bold text-[#1a1a1a] mb-1">Email Address</h3>
-                  <p className="text-gray-600">
-                    <a href={`mailto:${displayEmail}`} className="hover:text-[#C8A96E] transition-colors">{displayEmail}</a>
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-4 p-4 rounded-xl hover:bg-[#F5F0EB] transition-colors">
-                <div className="w-12 h-12 bg-[var(--color-primary)] rounded-full flex items-center justify-center text-white shrink-0">
-                  <MapPin size={20} />
-                </div>
-                <div>
-                  <h3 className="font-bold text-[#1a1a1a] mb-1">Office Address</h3>
-                  <p className="text-gray-600">
-                    {displayAddress}
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-4 p-4 rounded-xl hover:bg-[#F5F0EB] transition-colors">
-                <div className="w-12 h-12 bg-[var(--color-primary)] rounded-full flex items-center justify-center text-white shrink-0">
-                  <Clock size={20} />
-                </div>
-                <div>
-                  <h3 className="font-bold text-[#1a1a1a] mb-1">Business Hours</h3>
-                  <p className="text-gray-600">{contactInfo.hours}</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="pt-8 border-t border-gray-200">
-              <h3 className="font-bold text-[#1a1a1a] mb-4">Follow Us</h3>
-              <div className="flex gap-4">
-                <Link href={socialLinks.facebook} target="_blank" className="w-10 h-10 bg-[#F5F0EB] text-[var(--color-primary)] rounded-full flex items-center justify-center hover:bg-[#C8A96E] hover:text-white transition-colors font-bold">
-                  FB
-                </Link>
-                <Link href={socialLinks.instagram} target="_blank" className="w-10 h-10 bg-[#F5F0EB] text-[var(--color-primary)] rounded-full flex items-center justify-center hover:bg-[#C8A96E] hover:text-white transition-colors font-bold">
-                  IG
-                </Link>
-                <Link href={socialLinks.youtube} target="_blank" className="w-10 h-10 bg-[#F5F0EB] text-[var(--color-primary)] rounded-full flex items-center justify-center hover:bg-[#C8A96E] hover:text-white transition-colors font-bold">
-                  YT
-                </Link>
-              </div>
-            </div>
-          </motion.div>
         </div>
       </section>
 
-      {/* Map Section */}
-      <section className="h-[400px] w-full">
-        <iframe
-          src={contactInfo.googleMapsEmbed}
-          width="100%"
-          height="100%"
-          style={{ border: 0 }}
-          allowFullScreen
-          loading="lazy"
-          referrerPolicy="no-referrer-when-downgrade"
-          title="DSR Event Planner Location"
-        ></iframe>
+      {/* Main Content */}
+      <section className="bg-white text-slate-900 rounded-t-[3rem] -mt-10 relative z-20 py-24">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-16">
+            
+            {/* Contact Form */}
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="lg:col-span-3 bg-[#FAFAF5] p-10 md:p-12 rounded-[2rem] shadow-xl border border-black/5"
+            >
+              <h2 className="text-3xl font-bold font-heading mb-2">Send us a message</h2>
+              <p className="text-slate-500 mb-8 font-light">Fill out the form below and we'll get back to you shortly.</p>
+
+              {isSuccess ? (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="bg-green-50 border border-green-200 text-green-700 p-8 rounded-2xl flex flex-col items-center text-center space-y-4"
+                >
+                  <CheckCircle2 className="w-16 h-16 text-green-500" />
+                  <div>
+                    <h3 className="text-2xl font-bold mb-2">Message Sent!</h3>
+                    <p>Thank you for reaching out. We will contact you within 24 hours to discuss your event.</p>
+                  </div>
+                  <button
+                    onClick={() => setIsSuccess(false)}
+                    className="mt-4 px-6 py-2 bg-green-100 text-green-700 rounded-full font-medium hover:bg-green-200 transition"
+                  >
+                    Send Another Message
+                  </button>
+                </motion.div>
+              ) : (
+                <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+                  {serverError && (
+                    <div className="bg-red-50 text-red-600 p-4 rounded-xl text-sm border border-red-100">
+                      {serverError}
+                    </div>
+                  )}
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <label className="block text-sm font-medium text-slate-700 mb-2 uppercase tracking-wider text-xs">Name *</label>
+                      <input {...register("name")} type="text" className="w-full px-5 py-4 rounded-xl border border-slate-200 focus:border-[#C8A96E] focus:ring-1 focus:ring-[#C8A96E] outline-none transition bg-white" placeholder="John Doe" />
+                      {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name.message}</p>}
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-slate-700 mb-2 uppercase tracking-wider text-xs">Email *</label>
+                      <input {...register("email")} type="email" className="w-full px-5 py-4 rounded-xl border border-slate-200 focus:border-[#C8A96E] focus:ring-1 focus:ring-[#C8A96E] outline-none transition bg-white" placeholder="john@example.com" />
+                      {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>}
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <label className="block text-sm font-medium text-slate-700 mb-2 uppercase tracking-wider text-xs">Phone *</label>
+                      <input {...register("phone")} type="tel" className="w-full px-5 py-4 rounded-xl border border-slate-200 focus:border-[#C8A96E] focus:ring-1 focus:ring-[#C8A96E] outline-none transition bg-white" placeholder="+91 98305 56659" />
+                      {errors.phone && <p className="text-red-500 text-xs mt-1">{errors.phone.message}</p>}
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-slate-700 mb-2 uppercase tracking-wider text-xs">Event Type *</label>
+                      <select {...register("eventType")} className="w-full px-5 py-4 rounded-xl border border-slate-200 focus:border-[#C8A96E] focus:ring-1 focus:ring-[#C8A96E] outline-none transition bg-white text-slate-700">
+                        <option value="">Select event type</option>
+                        {eventTypes.map((type) => (
+                          <option key={type} value={type}>{type}</option>
+                        ))}
+                      </select>
+                      {errors.eventType && <p className="text-red-500 text-xs mt-1">{errors.eventType.message}</p>}
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-2 uppercase tracking-wider text-xs">Event Date</label>
+                    <input {...register("eventDate")} type="date" className="w-full px-5 py-4 rounded-xl border border-slate-200 focus:border-[#C8A96E] focus:ring-1 focus:ring-[#C8A96E] outline-none transition bg-white text-slate-700" />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-2 uppercase tracking-wider text-xs">Message *</label>
+                    <textarea {...register("message")} rows={5} className="w-full px-5 py-4 rounded-xl border border-slate-200 focus:border-[#C8A96E] focus:ring-1 focus:ring-[#C8A96E] outline-none transition bg-white resize-none" placeholder="Tell us about your dream event..." />
+                    {errors.message && <p className="text-red-500 text-xs mt-1">{errors.message.message}</p>}
+                  </div>
+
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="w-full flex items-center justify-center gap-3 px-8 py-5 bg-[var(--color-primary)] text-white font-bold rounded-xl hover:bg-slate-900 transition-all duration-300 disabled:opacity-50 shadow-lg hover:shadow-xl"
+                  >
+                    <Send className="w-5 h-5" />
+                    {isSubmitting ? "Sending..." : "Send Message"}
+                  </button>
+                </form>
+              )}
+            </motion.div>
+
+            {/* Contact Info */}
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="lg:col-span-2 space-y-6"
+            >
+              {contactDetails.map((detail, index) => (
+                <div key={index} className="bg-[#FAFAF5] rounded-2xl p-8 flex gap-6 items-start border border-black/5 group hover:bg-[#F5F0EB] transition-colors">
+                  <div className="w-14 h-14 rounded-full bg-white shadow-md flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-500">
+                    <detail.icon className="w-6 h-6 text-[#C8A96E]" />
+                  </div>
+                  <div>
+                    <h3 className="font-bold font-heading text-xl mb-2">{detail.title}</h3>
+                    {detail.lines.map((line, i) => (
+                      <p key={i} className="text-slate-600 font-light leading-relaxed">{line}</p>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* Google Maps */}
+      <section className="bg-white pb-24">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="rounded-[2rem] overflow-hidden shadow-2xl border-4 border-[#FAFAF5]">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3685.5!2d88.3413!3d22.4944!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a027119d6781f93%3A0x5c57b0e8d8e5b8a0!2sKarunamoyee%20Ghat%20Road!5e0!3m2!1sen!2sin!4v1"
+              width="100%"
+              height="500"
+              style={{ border: 0 }}
+              allowFullScreen
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              title="DSR Event Planner Location"
+            />
+          </div>
+        </div>
       </section>
     </div>
   );
 }
-
 
 
 
