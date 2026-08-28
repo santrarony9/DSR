@@ -20,7 +20,10 @@ const formSchema = z.object({
 
 type FormData = z.infer<typeof formSchema>;
 
-export default function ContactClient() {
+export default function ContactClient({ settings }: { settings?: any }) {
+  const displayPhone = settings?.phone || contactInfo.phone[0];
+  const displayEmail = settings?.email || contactInfo.email;
+  const displayAddress = settings?.address || contactInfo.fullAddress;
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
@@ -201,11 +204,7 @@ export default function ContactClient() {
                 <div>
                   <h3 className="font-bold text-[#1a1a1a] mb-1">Phone Number</h3>
                   <div className="text-gray-600 space-y-1">
-                    {contactInfo.phone.map((num, i) => (
-                      <p key={i}>
-                        <a href={`tel:+91${num}`} className="hover:text-[#C8A96E] transition-colors">+91 {num}</a>
-                      </p>
-                    ))}
+                    <p><a href={`tel:${displayPhone}`} className="hover:text-[#C8A96E] transition-colors">{displayPhone}</a></p>
                   </div>
                 </div>
               </div>
@@ -217,7 +216,7 @@ export default function ContactClient() {
                 <div>
                   <h3 className="font-bold text-[#1a1a1a] mb-1">Email Address</h3>
                   <p className="text-gray-600">
-                    <a href={`mailto:${contactInfo.email}`} className="hover:text-[#C8A96E] transition-colors">{contactInfo.email}</a>
+                    <a href={`mailto:${displayEmail}`} className="hover:text-[#C8A96E] transition-colors">{displayEmail}</a>
                   </p>
                 </div>
               </div>
@@ -229,9 +228,7 @@ export default function ContactClient() {
                 <div>
                   <h3 className="font-bold text-[#1a1a1a] mb-1">Office Address</h3>
                   <p className="text-gray-600">
-                    {contactInfo.address.line1}<br />
-                    {contactInfo.address.line2}<br />
-                    {contactInfo.address.city}, {contactInfo.address.state} {contactInfo.address.pin}
+                    {displayAddress}
                   </p>
                 </div>
               </div>
@@ -281,3 +278,7 @@ export default function ContactClient() {
     </div>
   );
 }
+
+
+
+
