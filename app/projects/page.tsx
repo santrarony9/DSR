@@ -22,7 +22,7 @@ export default async function ProjectsPage() {
             Featured Masterpieces
           </div>
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold font-heading mb-6 tracking-tight">
-            Our <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#C8A96E] to-[#E3CBA3] italic font-serif">Portfolio</span>
+            Our <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#C8A96E] to-[#E3CBA3] italic font-serif">Gallery</span>
           </h1>
           <p className="text-xl md:text-2xl text-white/60 font-light max-w-2xl mx-auto leading-relaxed">
             A glimpse into the magical moments we've crafted. From grand destination weddings to flawless corporate setups, see how we bring visions to life.
