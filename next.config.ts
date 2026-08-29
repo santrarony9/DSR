@@ -16,6 +16,19 @@ const nextConfig: NextConfig = {
 
 
 
+  async redirects() {
+    if (process.env.VERCEL) {
+      return [
+        {
+          source: "/admin/:path*",
+          destination: "http://117.252.16.132:3000/admin/:path*",
+          permanent: false,
+        },
+      ];
+    }
+    return [];
+  },
+
   async rewrites() {
     if (process.env.VERCEL) {
       return {

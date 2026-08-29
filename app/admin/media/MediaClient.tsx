@@ -32,31 +32,57 @@ export default function MediaClient({ categories, initialMedia }: { categories: 
     setError("");
 
     try {
-      const formData = new FormData();
-      formData.append("categoryId", categoryId);
-      formData.append("type", uploadType);
-      
       if (uploadType === "image" && files.length > 0) {
-        files.forEach(file => formData.append("files", file));
+        let successCount = 0;
+        let failCount = 0;
+        for (let i = 0; i < files.length; i++) {
+          const file = files[i];
+          const formData = new FormData();
+          formData.append("categoryId", categoryId);
+          formData.append("type", uploadType);
+          formData.append("files", file);
+
+          try {
+            const res = await fetch("/api/media", {
+              method: "POST",
+              headers: { "x-admin-secret": "dsr_admin_secret_2026" },
+              body: formData,
+            });
+            if (res.ok) successCount++;
+            else failCount++;
+          } catch (e) {
+            failCount++;
+          }
+        }
+        
+        if (successCount > 0) {
+          setFiles([]);
+          const fileInput = document.getElementById("file-upload") as HTMLInputElement;
+          if (fileInput) fileInput.value = "";
+          router.refresh();
+          if (failCount > 0) setError(`Uploaded ${successCount} files, but ${failCount} failed.`);
+        } else {
+          setError(`Failed to upload ${failCount} files. Please ensure they are under 7MB each.`);
+        }
       } else if (uploadType === "video" && VideoUrl) {
+        const formData = new FormData();
+        formData.append("categoryId", categoryId);
+        formData.append("type", uploadType);
         formData.append("url", VideoUrl);
-      }
 
-      const res = await fetch("/api/media", {
-        method: "POST",
-        headers: { "x-admin-secret": "dsr_admin_secret_2026" },
-        body: formData,
-      });
+        const res = await fetch("/api/media", {
+          method: "POST",
+          headers: { "x-admin-secret": "dsr_admin_secret_2026" },
+          body: formData,
+        });
 
-      if (res.ok) {
-        setFiles([]);
-        setVideoUrl("");
-        const fileInput = document.getElementById("file-upload") as HTMLInputElement;
-        if (fileInput) fileInput.value = "";
-        router.refresh();
-      } else {
-        const data = await res.json();
-        setError(data.error || "Failed to add media");
+        if (res.ok) {
+          setVideoUrl("");
+          router.refresh();
+        } else {
+          const data = await res.json();
+          setError(data.error || "Failed to add video");
+        }
       }
     } catch (err) {
       setError("An unexpected error occurred. Please try again.");
