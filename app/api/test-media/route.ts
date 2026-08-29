@@ -7,7 +7,6 @@ export async function GET() {
   await connectToDatabase();
   const media = await Media.find({}).lean();
   return NextResponse.json({ 
-    count: media.length, 
-    uriUsed: mongoose.connection.client.s.url || mongoose.connection.host || "unknown"
+    count: media.length
   });
 }
