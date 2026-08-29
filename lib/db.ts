@@ -1,7 +1,9 @@
 import mongoose from "mongoose";
 
-const MONGODB_URI = process.env.MONGODB_URI || "";
-
+let MONGODB_URI = process.env.MONGODB_URI || "";
+if (MONGODB_URI && !MONGODB_URI.includes("dsrevent_db")) {
+  MONGODB_URI = MONGODB_URI.replace("mongodb.net/?", "mongodb.net/dsrevent_db?");
+}
 let cached = (global as any).mongoose;
 
 if (!cached) {
