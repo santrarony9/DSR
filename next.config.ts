@@ -45,12 +45,7 @@ const nextConfig: NextConfig = {
         fallback: []
       };
     }
-    return [
-      {
-        source: "/uploads/:path*",
-        destination: "http://117.252.16.132:3000/uploads/:path*",
-      },
-    ];
+    return [];
   },
 
   // Disable x-powered-by header
