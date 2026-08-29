@@ -24,8 +24,7 @@ export async function GET() {
 export async function POST(req: Request) {
   try {
     const session = await getServerSession(authOptions);
-    // if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-
+    if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
     const formData = await req.formData();
     const categoryId = formData.get("categoryId") as string;
