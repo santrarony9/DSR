@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import ProjectsClient from "./ProjectsClient";
 import { getGalleryData } from "@/lib/fetchGallery";
 
+export const dynamic = "force-dynamic";
 export const metadata = {
   title: "Our Work | DSR Event Planner",
   description: "Browse through our portfolio of beautifully executed weddings, corporate events, and celebrations.",
