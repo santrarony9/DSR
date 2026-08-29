@@ -14,25 +14,7 @@ const nextConfig: NextConfig = {
     ],
   },
 
-  async redirects() {
-    // On Vercel, redirect ALL admin traffic to the VPS (port 80 via Nginx)
-    // This ensures the same server renders the page AND handles API calls - no ID mismatch
-    if (process.env.VERCEL) {
-      return [
-        {
-          source: "/admin",
-          destination: "http://117.252.16.132/admin",
-          permanent: false,
-        },
-        {
-          source: "/admin/:path*",
-          destination: "http://117.252.16.132/admin/:path*",
-          permanent: false,
-        },
-      ];
-    }
-    return [];
-  },
+
 
   async rewrites() {
     if (process.env.VERCEL) {
