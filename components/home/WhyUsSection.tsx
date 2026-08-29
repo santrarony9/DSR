@@ -71,7 +71,7 @@ export default function WhyUsSection() {
           className="relative h-[600px] rounded-3xl overflow-hidden shadow-xl"
         >
           <Image
-            src="/images/about/why-img.webp"
+            src="/images/about/why-img-new.jpg"
             alt="Why choose DSR Event Planner"
             fill
             className="object-cover"
