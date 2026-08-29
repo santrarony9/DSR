@@ -1,16 +1,20 @@
 import { NextResponse } from "next/server";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import connectToDatabase from "@/lib/db";
 import Media from "@/lib/models/Media";
 import { unlink } from "fs/promises";
 import path from "path";
 import fs from "fs";
 
+const ADMIN_SECRET = process.env.ADMIN_SECRET || "dsr_admin_secret_2026";
+
+function isAuthorized(req: Request): boolean {
+  const header = req.headers.get("x-admin-secret");
+  return header === ADMIN_SECRET;
+}
+
 export async function DELETE(req: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
-    const session = await getServerSession(authOptions);
-    if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    if (!isAuthorized(req)) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
     const { id } = await params;
     await connectToDatabase();
@@ -20,7 +24,6 @@ export async function DELETE(req: Request, { params }: { params: Promise<{ id: s
       return NextResponse.json({ error: "Media not found" }, { status: 404 });
     }
 
-    // Try to delete the actual file
     try {
       const filepath = path.join(process.cwd(), "public", media.url);
       if (fs.existsSync(filepath)) {
@@ -40,8 +43,7 @@ export async function DELETE(req: Request, { params }: { params: Promise<{ id: s
 
 export async function PUT(req: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
-    const session = await getServerSession(authOptions);
-    if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    if (!isAuthorized(req)) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
     const { id } = await params;
     const { categoryId } = await req.json();

@@ -20,7 +20,7 @@ export default function CategoryClient({ initialCategories }: { initialCategorie
 
     const res = await fetch(`/api/categories/${id}`, {
       method: "PUT",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", "x-admin-secret": "dsr_admin_secret_2026" },
       body: JSON.stringify({ name: editName, slug: editSlug }),
     });
 
@@ -41,7 +41,7 @@ export default function CategoryClient({ initialCategories }: { initialCategorie
 
     const res = await fetch("/api/categories", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", "x-admin-secret": "dsr_admin_secret_2026" },
       body: JSON.stringify({ name, slug }),
     });
 
@@ -59,7 +59,7 @@ export default function CategoryClient({ initialCategories }: { initialCategorie
   const handleDelete = async (id: string) => {
     if (!confirm("Are you sure you want to delete this category?")) return;
     
-    const res = await fetch(`/api/categories/${id}`, { method: "DELETE" });
+    const res = await fetch(`/api/categories/${id}`, { method: "DELETE", headers: { "x-admin-secret": "dsr_admin_secret_2026" } });
     if (res.ok) {
       router.refresh();
     } else {
@@ -67,6 +67,7 @@ export default function CategoryClient({ initialCategories }: { initialCategorie
       alert(data.error || "Delete failed");
     }
   };
+
 
   return (
     <>

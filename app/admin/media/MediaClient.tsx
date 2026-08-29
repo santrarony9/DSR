@@ -44,6 +44,7 @@ export default function MediaClient({ categories, initialMedia }: { categories: 
 
       const res = await fetch("/api/media", {
         method: "POST",
+        headers: { "x-admin-secret": "dsr_admin_secret_2026" },
         body: formData,
       });
 
@@ -66,7 +67,7 @@ export default function MediaClient({ categories, initialMedia }: { categories: 
 
   const handleDelete = async (id: string) => {
     if (!confirm("Are you sure you want to delete this media?")) return;
-    const res = await fetch(`/api/media/${id}`, { method: "DELETE" });
+    const res = await fetch(`/api/media/${id}`, { method: "DELETE", headers: { "x-admin-secret": "dsr_admin_secret_2026" } });
     if (res.ok) router.refresh();
   };
 
@@ -78,7 +79,7 @@ export default function MediaClient({ categories, initialMedia }: { categories: 
     setLoading(true);
     const res = await fetch(`/api/media/${id}`, {
       method: "PUT",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", "x-admin-secret": "dsr_admin_secret_2026" },
       body: JSON.stringify({ categoryId: editCategoryId }),
     });
     setLoading(false);

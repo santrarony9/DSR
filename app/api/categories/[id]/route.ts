@@ -1,19 +1,22 @@
 import { NextResponse } from "next/server";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import connectToDatabase from "@/lib/db";
 import Category from "@/lib/models/Category";
 import Media from "@/lib/models/Media";
 
+const ADMIN_SECRET = process.env.ADMIN_SECRET || "dsr_admin_secret_2026";
+
+function isAuthorized(req: Request): boolean {
+  const header = req.headers.get("x-admin-secret");
+  return header === ADMIN_SECRET;
+}
+
 export async function DELETE(req: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
-    const session = await getServerSession(authOptions);
-    if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    if (!isAuthorized(req)) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
     const { id } = await params;
     await connectToDatabase();
     
-    // Check if category has media
     const mediaCount = await Media.countDocuments({ categoryId: id });
     if (mediaCount > 0) {
       return NextResponse.json({ error: "Cannot delete category with associated media. Delete media first." }, { status: 400 });
@@ -30,8 +33,7 @@ export async function DELETE(req: Request, { params }: { params: Promise<{ id: s
 
 export async function PUT(req: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
-    const session = await getServerSession(authOptions);
-    if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    if (!isAuthorized(req)) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
     const { id } = await params;
     const { name, slug } = await req.json();
@@ -42,7 +44,6 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
 
     await connectToDatabase();
     
-    // Check if slug is taken by ANOTHER category
     const existing = await Category.findOne({ slug, _id: { $ne: id } });
     if (existing) {
       return NextResponse.json({ error: "Slug already exists" }, { status: 400 });

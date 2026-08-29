@@ -10,6 +10,8 @@ import { put } from "@vercel/blob";
 
 export const maxDuration = 60;
 
+const ADMIN_SECRET = process.env.ADMIN_SECRET || "dsr_admin_secret_2026";
+
 export async function GET() {
   try {
     await connectToDatabase();
@@ -23,8 +25,8 @@ export async function GET() {
 
 export async function POST(req: Request) {
   try {
-    const session = await getServerSession(authOptions);
-    if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    const adminSecret = req.headers.get("x-admin-secret");
+    if (adminSecret !== ADMIN_SECRET) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
     const formData = await req.formData();
     const categoryId = formData.get("categoryId") as string;
