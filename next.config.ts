@@ -14,27 +14,36 @@ const nextConfig: NextConfig = {
     ],
   },
 
-  async redirects() {
-    // Only redirect if we are NOT already on the VPS
-    // Vercel sets specific environment variables, so we can conditionally apply this
+  async rewrites() {
     if (process.env.VERCEL) {
       return [
         {
-          source: "/admin/:path*",
-          destination: "http://117.252.16.132:3000/admin/:path*",
-          permanent: false,
+          source: "/uploads/:path*",
+          destination: "http://117.252.16.132:3000/uploads/:path*",
         },
+        {
+          source: "/api/media/:path*",
+          destination: "http://117.252.16.132:3000/api/media/:path*",
+        },
+        {
+          source: "/api/media",
+          destination: "http://117.252.16.132:3000/api/media",
+        },
+        {
+          source: "/api/categories/:path*",
+          destination: "http://117.252.16.132:3000/api/categories/:path*",
+        },
+        {
+          source: "/api/categories",
+          destination: "http://117.252.16.132:3000/api/categories",
+        }
       ];
     }
-    return [];
-  },
-
-  async rewrites() {
     return [
       {
         source: "/uploads/:path*",
         destination: "http://117.252.16.132:3000/uploads/:path*",
-      },
+      }
     ];
   },
 
