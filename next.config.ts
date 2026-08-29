@@ -35,7 +35,30 @@ const nextConfig: NextConfig = {
   },
 
   async rewrites() {
-    // Always proxy /uploads/* to the VPS so images load on both Vercel and VPS
+    if (process.env.VERCEL) {
+      return [
+        {
+          source: "/uploads/:path*",
+          destination: "http://117.252.16.132:3000/uploads/:path*",
+        },
+        {
+          source: "/api/media",
+          destination: "http://117.252.16.132:3000/api/media",
+        },
+        {
+          source: "/api/media/:path*",
+          destination: "http://117.252.16.132:3000/api/media/:path*",
+        },
+        {
+          source: "/api/categories",
+          destination: "http://117.252.16.132:3000/api/categories",
+        },
+        {
+          source: "/api/categories/:path*",
+          destination: "http://117.252.16.132:3000/api/categories/:path*",
+        },
+      ];
+    }
     return [
       {
         source: "/uploads/:path*",
