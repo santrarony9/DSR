@@ -14,6 +14,21 @@ const nextConfig: NextConfig = {
     ],
   },
 
+  async redirects() {
+    // Only redirect if we are NOT already on the VPS
+    // Vercel sets specific environment variables, so we can conditionally apply this
+    if (process.env.VERCEL) {
+      return [
+        {
+          source: "/admin/:path*",
+          destination: "http://117.252.16.132:3000/admin/:path*",
+          permanent: false,
+        },
+      ];
+    }
+    return [];
+  },
+
   async rewrites() {
     return [
       {
@@ -27,6 +42,11 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   // Enable compression
   compress: true,
+  experimental: {
+    serverActions: {
+      bodySizeLimit: '100mb',
+    },
+  },
 };
 
 export default nextConfig;
