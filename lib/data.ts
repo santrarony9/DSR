@@ -43,8 +43,8 @@ export const aboutPreview = {
     "Now, as DSR Event Planner marks its 25th year of dedicated service, we proudly reflect on thousands of events curated with excellence, innovation, and trust. For twenty-five years, our team has transformed occasions into memorable experiences—earning the confidence of clients and setting new standards for event planning in Kolkata and beyond.",
   ],
   images: {
-    main: "/images/about/hm-abt-img.webp",
-    secondary: "/images/about/abt-img2.webp",
+    main: "/images/about/wedding-bg.jpg",
+    secondary: "/images/about/founders-office.jpg",
   },
 };
 
