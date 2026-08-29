@@ -7,6 +7,7 @@ if (MONGODB_URI && !MONGODB_URI.includes("dsrevent_db")) {
     MONGODB_URI = parts[0] + "mongodb.net/dsrevent_db" + (parts[1].startsWith("/") ? parts[1].substring(1) : parts[1]);
   }
 }
+console.log("ACTUAL URI AFTER REPLACE:", MONGODB_URI);
 let cached = (global as any).mongoose;
 
 if (!cached) {
