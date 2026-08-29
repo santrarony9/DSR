@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { Trash2, ImagePlus, Video, UploadCloud } from "lucide-react";
+import { Trash2, ImagePlus, Video, UploadCloud, Edit2 } from "lucide-react";
 
 export default function MediaClient({ categories, initialMedia }: { categories: any[], initialMedia: any[] }) {
   const [file, setFile] = useState<File | null>(null);
@@ -68,6 +68,26 @@ export default function MediaClient({ categories, initialMedia }: { categories: 
     if (!confirm("Are you sure you want to delete this media?")) return;
     const res = await fetch(`/api/media/${id}`, { method: "DELETE" });
     if (res.ok) router.refresh();
+  };
+
+  const [editingMedia, setEditingMedia] = useState<string | null>(null);
+  const [editCategoryId, setEditCategoryId] = useState("");
+
+  const handleUpdate = async (id: string) => {
+    if (!editCategoryId) return;
+    setLoading(true);
+    const res = await fetch(`/api/media/${id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ categoryId: editCategoryId }),
+    });
+    setLoading(false);
+    if (res.ok) {
+      setEditingMedia(null);
+      router.refresh();
+    } else {
+      alert("Failed to update media category");
+    }
   };
 
   const getVideoId = (url: string) => {
@@ -183,8 +203,8 @@ export default function MediaClient({ categories, initialMedia }: { categories: 
             const videoId = isVideo ? getVideoId(media.url) : null;
             
             return (
-              <div key={media._id.toString()} className="group relative bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden hover:shadow-md transition-shadow">
-                <div className="aspect-square relative bg-slate-100 flex items-center justify-center">
+              <div key={media._id.toString()} className="group relative bg-white rounded-xl shadow-sm border border-slate-100 overflow-visible hover:shadow-md transition-shadow flex flex-col">
+                <div className="aspect-square relative bg-slate-100 flex items-center justify-center overflow-hidden rounded-t-xl">
                   {isVideo ? (
                     <>
                       {videoId ? (
@@ -192,7 +212,7 @@ export default function MediaClient({ categories, initialMedia }: { categories: 
                       ) : (
                         <Video size={40} className="text-red-400" />
                       )}
-                      <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
+                      <div className="absolute inset-0 bg-black/30 flex items-center justify-center pointer-events-none">
                         <div className="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center pl-1 shadow-lg">
                           <div className="w-0 h-0 border-t-[8px] border-t-transparent border-l-[12px] border-l-white border-b-[8px] border-b-transparent"></div>
                         </div>
@@ -202,20 +222,60 @@ export default function MediaClient({ categories, initialMedia }: { categories: 
                     <Image src={media.url} alt="Gallery image" fill className="object-cover" />
                   )}
                   
-                  {/* Delete Overlay */}
-                  <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-[2px]">
+                  {/* Action Overlay */}
+                  <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-3 backdrop-blur-[2px]">
+                    <button 
+                      onClick={() => {
+                        setEditingMedia(media._id.toString());
+                        setEditCategoryId(media.categoryId?._id?.toString() || (categories[0]?._id?.toString() || ""));
+                      }}
+                      className="bg-blue-600 text-white px-4 py-2 rounded-full font-bold hover:bg-blue-700 transition-transform hover:scale-105 shadow-xl flex items-center gap-2"
+                      title="Edit Album"
+                    >
+                      <Edit2 size={16} /> Change Album
+                    </button>
                     <button 
                       onClick={() => handleDelete(media._id.toString())}
-                      className="bg-red-600 text-white p-3 rounded-full hover:bg-red-700 transition-transform hover:scale-110 shadow-xl"
+                      className="bg-red-600 text-white p-2 rounded-full hover:bg-red-700 transition-transform hover:scale-110 shadow-xl"
                       title="Delete"
                     >
-                      <Trash2 size={24} />
+                      <Trash2 size={20} />
                     </button>
                   </div>
                 </div>
-                <div className="p-3 text-[10px] font-bold text-slate-500 uppercase tracking-wider text-center bg-slate-50 border-t truncate">
-                  {media.categoryId?.name || "Unknown Album"}
-                </div>
+                
+                {editingMedia === media._id.toString() ? (
+                  <div className="p-3 bg-blue-50 border-t border-blue-100 relative z-10">
+                    <select
+                      className="w-full px-2 py-1 mb-2 text-xs rounded border border-blue-200 outline-none"
+                      value={editCategoryId}
+                      onChange={(e) => setEditCategoryId(e.target.value)}
+                    >
+                      {categories.map(c => (
+                        <option key={c._id.toString()} value={c._id.toString()}>{c.name}</option>
+                      ))}
+                    </select>
+                    <div className="flex gap-2">
+                      <button 
+                        onClick={() => handleUpdate(media._id.toString())}
+                        className="flex-1 bg-blue-600 text-white text-xs font-bold py-1 rounded hover:bg-blue-700"
+                        disabled={loading}
+                      >
+                        Save
+                      </button>
+                      <button 
+                        onClick={() => setEditingMedia(null)}
+                        className="flex-1 bg-slate-300 text-slate-700 text-xs font-bold py-1 rounded hover:bg-slate-400"
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="p-3 text-[10px] font-bold text-slate-500 uppercase tracking-wider text-center bg-slate-50 border-t truncate rounded-b-xl">
+                    {media.categoryId?.name || "Unknown Album"}
+                  </div>
+                )}
               </div>
             );
           })}

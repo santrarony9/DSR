@@ -38,3 +38,25 @@ export async function DELETE(req: Request, { params }: { params: Promise<{ id: s
   }
 }
 
+export async function PUT(req: Request, { params }: { params: Promise<{ id: string }> }) {
+  try {
+    const session = await getServerSession(authOptions);
+    if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
+    const { id } = await params;
+    const { categoryId } = await req.json();
+
+    if (!categoryId) {
+      return NextResponse.json({ error: "Category ID is required" }, { status: 400 });
+    }
+
+    await connectToDatabase();
+    
+    const media = await Media.findByIdAndUpdate(id, { categoryId }, { new: true });
+    if (!media) return NextResponse.json({ error: "Media not found" }, { status: 404 });
+    
+    return NextResponse.json(media);
+  } catch (error) {
+    return NextResponse.json({ error: "Failed to update media" }, { status: 500 });
+  }
+}
