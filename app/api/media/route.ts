@@ -16,7 +16,8 @@ export async function GET() {
     const media = await Media.find({}).populate("categoryId").sort({ createdAt: -1 });
     return NextResponse.json(media);
   } catch (error) {
-    return NextResponse.json({ error: "Failed to fetch media" }, { status: 500 });
+    console.error("Media fetch error:", error);
+    return NextResponse.json({ error: "Failed to fetch media", details: (error as any).message }, { status: 500 });
   }
 }
 
