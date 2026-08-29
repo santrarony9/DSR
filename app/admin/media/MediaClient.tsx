@@ -6,7 +6,7 @@ import Image from "next/image";
 import { Trash2, ImagePlus, Video, UploadCloud, Edit2 } from "lucide-react";
 
 export default function MediaClient({ categories, initialMedia }: { categories: any[], initialMedia: any[] }) {
-  const [file, setFile] = useState<File | null>(null);
+  const [files, setFiles] = useState<File[]>([]);
   const [VideoUrl, setVideoUrl] = useState("");
   const [categoryId, setCategoryId] = useState(categories.length > 0 ? categories[0]._id.toString() : "");
   const [loading, setLoading] = useState(false);
@@ -18,8 +18,8 @@ export default function MediaClient({ categories, initialMedia }: { categories: 
     e.preventDefault();
     if (!categoryId) return;
     
-    if (uploadType === "image" && !file) {
-      setError("Please select an image file first.");
+    if (uploadType === "image" && files.length === 0) {
+      setError("Please select at least one image file first.");
       return;
     }
     
@@ -36,8 +36,8 @@ export default function MediaClient({ categories, initialMedia }: { categories: 
       formData.append("categoryId", categoryId);
       formData.append("type", uploadType);
       
-      if (uploadType === "image" && file) {
-        formData.append("file", file);
+      if (uploadType === "image" && files.length > 0) {
+        files.forEach(file => formData.append("files", file));
       } else if (uploadType === "video" && VideoUrl) {
         formData.append("url", VideoUrl);
       }
@@ -48,7 +48,7 @@ export default function MediaClient({ categories, initialMedia }: { categories: 
       });
 
       if (res.ok) {
-        setFile(null);
+        setFiles([]);
         setVideoUrl("");
         const fileInput = document.getElementById("file-upload") as HTMLInputElement;
         if (fileInput) fileInput.value = "";
@@ -130,7 +130,7 @@ export default function MediaClient({ categories, initialMedia }: { categories: 
                 value={uploadType}
                 onChange={(e) => setUploadType(e.target.value as "image" | "video")}
               >
-                <option value="image">A Photo (From my computer)</option>
+                <option value="image">Photos (From my computer)</option>
                 <option value="video">A Video (YouTube Link)</option>
               </select>
             </div>
@@ -140,7 +140,7 @@ export default function MediaClient({ categories, initialMedia }: { categories: 
           <div className="bg-white p-6 rounded-xl border border-slate-200">
             {uploadType === "image" ? (
               <div>
-                <label className="block font-bold text-slate-700 mb-2 uppercase tracking-wider text-xs text-center">3. Choose Photo to Upload (Max 5MB)</label>
+                <label className="block font-bold text-slate-700 mb-2 uppercase tracking-wider text-xs text-center">3. Choose Photos to Upload (Max 7MB each)</label>
                 <div className="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
                   <div className="text-center">
                     <ImagePlus className="mx-auto h-12 w-12 text-gray-300" aria-hidden="true" />
@@ -149,15 +149,15 @@ export default function MediaClient({ categories, initialMedia }: { categories: 
                         htmlFor="file-upload"
                         className="relative cursor-pointer rounded-md bg-white font-semibold text-[var(--color-primary)] focus-within:outline-none focus-within:ring-2 focus-within:ring-[#C8A96E] focus-within:ring-offset-2 hover:text-[#C8A96E]"
                       >
-                        <span className="bg-slate-100 px-4 py-2 rounded-lg border border-slate-200">Click to Select File</span>
-                        <input id="file-upload" name="file-upload" type="file" accept="image/*" className="sr-only" onChange={(e) => {
-                          if (e.target.files?.[0]) {
-                            setFile(e.target.files[0]);
+                        <span className="bg-slate-100 px-4 py-2 rounded-lg border border-slate-200">Click to Select Files</span>
+                        <input id="file-upload" name="file-upload" type="file" multiple accept="image/*" className="sr-only" onChange={(e) => {
+                          if (e.target.files) {
+                            setFiles(Array.from(e.target.files));
                           }
                         }} />
                       </label>
                     </div>
-                    <p className="text-xs leading-5 text-gray-600 mt-4">{file ? <span className="text-green-600 font-bold">Selected: {file.name}</span> : "PNG, JPG, WEBP up to 5MB"}</p>
+                    <p className="text-xs leading-5 text-gray-600 mt-4">{files.length > 0 ? <span className="text-green-600 font-bold">Selected: {files.length} file(s)</span> : "PNG, JPG, WEBP up to 7MB"}</p>
                   </div>
                 </div>
               </div>
@@ -182,13 +182,13 @@ export default function MediaClient({ categories, initialMedia }: { categories: 
 
           <button 
             type="submit" 
-            disabled={loading || (uploadType === "image" ? !file : !VideoUrl)}
+            disabled={loading || (uploadType === "image" ? files.length === 0 : !VideoUrl)}
             className="w-full bg-[#C8A96E] text-slate-900 font-bold py-4 rounded-xl hover:bg-[#b5965d] transition-colors flex items-center justify-center gap-2 disabled:opacity-50 text-lg shadow-lg"
           >
             {loading ? (
               <span className="flex items-center gap-2">Uploading... <div className="w-5 h-5 border-2 border-slate-900 border-t-transparent rounded-full animate-spin"></div></span>
             ) : (
-              <><UploadCloud size={24} /> {uploadType === "image" ? "Upload Photo to Album" : "Add Video to Album"}</>
+              <><UploadCloud size={24} /> {uploadType === "image" ? "Upload Photo(s) to Album" : "Add Video to Album"}</>
             )}
           </button>
         </form>
