@@ -202,7 +202,7 @@ export default function GetAFreeQuotePage() {
                     {...register("phone")}
                     type="tel"
                     className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-[#C8A96E] focus:ring-1 focus:ring-[#C8A96E] outline-none transition"
-                    placeholder="+91 98305 56659"
+                    placeholder="+91 62893 80112"
                   />
                   {errors.phone && (
                     <p className="text-red-500 text-sm mt-1">{errors.phone.message}</p>

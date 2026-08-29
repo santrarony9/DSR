@@ -10,7 +10,7 @@ export const siteConfig = {
 };
 
 export const contactInfo = {
-  phone: ["9830556659", "6289380112"],
+  phone: ["6289380112", "9830556659"],
   email: "dsrevent06@gmail.com",
   whatsapp: "916289380112",
   address: {

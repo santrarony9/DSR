@@ -62,15 +62,26 @@ export default function ProjectsTabs({ categories }: { categories: any[] }) {
                   onMouseEnter={() => setHoveredImage(idx)}
                   onMouseLeave={() => setHoveredImage(null)}
                 >
-                  <Image
-                    src={img.src}
-                    alt={img.alt}
-                    width={600}
-                    height={idx % 3 === 0 ? 800 : idx % 2 === 0 ? 600 : 400}
-                    className="w-full h-auto object-cover transform transition-transform duration-700 group-hover:scale-110"
-                    placeholder="blur"
-                    blurDataURL="data:image/webp;base64,UklGRlIAAABXRUJQVlA4IEYAAAAwAQCdASoIAAUAAUAmJaQAA3AA/v89WAAAAAA="
-                  />
+                  {img.type === "video" && !img.youtubeId ? (
+                    <video
+                      src={img.src}
+                      autoPlay
+                      muted
+                      loop
+                      playsInline
+                      className="w-full h-auto object-cover transform transition-transform duration-700 group-hover:scale-110"
+                    />
+                  ) : (
+                    <Image
+                      src={img.youtubeId ? `https://img.youtube.com/vi/${img.youtubeId}/hqdefault.jpg` : img.src}
+                      alt={img.alt}
+                      width={600}
+                      height={idx % 3 === 0 ? 800 : idx % 2 === 0 ? 600 : 400}
+                      className="w-full h-auto object-cover transform transition-transform duration-700 group-hover:scale-110"
+                      placeholder="blur"
+                      blurDataURL="data:image/webp;base64,UklGRlIAAABXRUJQVlA4IEYAAAAwAQCdASoIAAUAAUAmJaQAA3AA/v89WAAAAAA="
+                    />
+                  )}
                   
                   {/* Overlay */}
                   <div className={`absolute inset-0 bg-black/30 backdrop-blur-[2px] transition-all duration-500 flex items-center justify-center ${hoveredImage === idx ? "opacity-100" : "opacity-0"}`}>

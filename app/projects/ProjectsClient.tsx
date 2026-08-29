@@ -45,8 +45,8 @@ export default function ProjectsClient({ categories }: { categories: any[] }) {
               className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
             >
               {activeCategory?.images.map((img: any, idx: number) => {
-                const isVideo = img.type === "video" || !!img.VideoId;
-                const thumbnailUrl = isVideo && img.VideoId ? `https://img.Video.com/vi/${img.VideoId}/hqdefault.jpg` : img.src;
+                const isVideo = img.type === "video" || !!img.youtubeId || img.isLocalVideo;
+                const thumbnailUrl = img.youtubeId ? `https://img.youtube.com/vi/${img.youtubeId}/hqdefault.jpg` : img.src;
 
                 return (
                   <motion.div
@@ -57,12 +57,22 @@ export default function ProjectsClient({ categories }: { categories: any[] }) {
                     className="group relative aspect-[4/5] overflow-hidden rounded-[2rem] bg-slate-100 cursor-pointer shadow-lg hover:shadow-2xl transition-all duration-500 border-4 border-white"
                     onClick={() => setSelectedMedia(img)}
                   >
-                    <Image
-                      src={thumbnailUrl}
-                      alt={img.alt || "Portfolio Media"}
-                      fill
-                      className="object-cover transition-transform duration-700 group-hover:scale-110"
-                    />
+                    {img.type === "video" && !img.youtubeId ? (
+                      <video
+                        src={thumbnailUrl}
+                        className="object-cover w-full h-full transition-transform duration-700 group-hover:scale-110"
+                        muted
+                        loop
+                        playsInline
+                      />
+                    ) : (
+                      <Image
+                        src={thumbnailUrl}
+                        alt={img.alt || "Portfolio Media"}
+                        fill
+                        className="object-cover transition-transform duration-700 group-hover:scale-110"
+                      />
+                    )}
                     
                     {isVideo && (
                       <div className="absolute inset-0 flex items-center justify-center bg-black/20">
@@ -114,16 +124,23 @@ export default function ProjectsClient({ categories }: { categories: any[] }) {
               className="relative w-full max-w-5xl aspect-[16/9] rounded-2xl overflow-hidden shadow-2xl border-4 border-white/10 bg-black flex items-center justify-center"
               onClick={(e) => e.stopPropagation()}
             >
-              {(selectedMedia.type === "video" || selectedMedia.VideoId) ? (
+              {selectedMedia.youtubeId ? (
                 <iframe 
                   width="100%" 
                   height="100%" 
-                  src={`https://www.Video.com/embed/${selectedMedia.VideoId}?autoplay=1`}
-                  title="Video video player" 
+                  src={`https://www.youtube.com/embed/${selectedMedia.youtubeId}?autoplay=1`}
+                  title="YouTube video player" 
                   frameBorder="0" 
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
                   allowFullScreen
                 ></iframe>
+              ) : selectedMedia.type === "video" ? (
+                <video
+                  src={selectedMedia.src}
+                  controls
+                  autoPlay
+                  className="w-full h-full object-contain"
+                />
               ) : (
                 <Image
                   src={selectedMedia.src}

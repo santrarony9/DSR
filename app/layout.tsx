@@ -7,6 +7,8 @@ import Footer from "@/components/layout/Footer";
 import WhatsAppWidget from "@/components/shared/WhatsAppWidget";
 import ScrollToTop from "@/components/layout/ScrollToTop";
 
+export const revalidate = 60;
+
 const bricolage = Bricolage_Grotesque({
   subsets: ["latin"],
   weight: ["400", "600", "700"],
@@ -25,11 +27,25 @@ export const metadata: Metadata = {
   keywords: ["Event Planner", "Kolkata", "Wedding Planner", "Corporate Events", "DSR Event Planner"],
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // Fetch settings for dynamic elements in layout
+  let phone = "6289380112";
+  try {
+    const { default: connectToDatabase } = await import("@/lib/db");
+    const { default: Settings } = await import("@/lib/models/Settings");
+    await connectToDatabase();
+    const settings = await Settings.findOne();
+    if (settings && settings.phone) {
+      phone = settings.phone;
+    }
+  } catch (error) {
+    console.log("Database connection failed, using fallback contact data for layout");
+  }
+
   return (
     <html lang="en">
       <body
@@ -38,7 +54,7 @@ export default function RootLayout({
         <PublicWrapper
           header={<Header />}
           footer={<Footer />}
-          whatsapp={<WhatsAppWidget />}
+          whatsapp={<WhatsAppWidget phone={phone} />}
           scrollToTop={<ScrollToTop />}
         >
           {children}

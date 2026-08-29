@@ -59,7 +59,7 @@ export default function ContactClient({ settings }: { settings?: any }) {
     {
       icon: Phone,
       title: "Call Us",
-      lines: [(settings?.phone || "+91 98305 56659"), "Mon-Sat: 10AM - 7PM"],
+      lines: [(settings?.phone || "+91 62893 80112"), "+91 98305 56659", "Mon-Sat: 10AM - 7PM"],
     },
     {
       icon: Mail,
@@ -145,7 +145,7 @@ export default function ContactClient({ settings }: { settings?: any }) {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                       <label className="block text-sm font-medium text-slate-700 mb-2 uppercase tracking-wider text-xs">Phone *</label>
-                      <input {...register("phone")} type="tel" className="w-full px-5 py-4 rounded-xl border border-slate-200 focus:border-[#C8A96E] focus:ring-1 focus:ring-[#C8A96E] outline-none transition bg-white" placeholder="+91 98305 56659" />
+                      <input {...register("phone")} type="tel" className="w-full px-5 py-4 rounded-xl border border-slate-200 focus:border-[#C8A96E] focus:ring-1 focus:ring-[#C8A96E] outline-none transition bg-white" placeholder="+91 62893 80112" />
                       {errors.phone && <p className="text-red-500 text-xs mt-1">{errors.phone.message}</p>}
                     </div>
                     <div>

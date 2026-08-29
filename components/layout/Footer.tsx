@@ -6,7 +6,7 @@ import Settings from "@/lib/models/Settings";
 
 export default async function Footer() {
   // Fetch real contact data from MongoDB
-  let phone = "+91 9830556659";
+  let phone = "+91 6289380112";
   let email = "dsrevent06@gmail.com";
   let address = "104A/22V Karunamoyee Ghat Road, Kolkata, West Bengal 700082";
 
