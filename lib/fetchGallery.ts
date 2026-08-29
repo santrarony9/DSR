@@ -42,6 +42,16 @@ export async function getGalleryData() {
       });
     }
 
+    const order = ["wedding", "haldi", "birthday", "government", "cultural"];
+    formattedGallery.sort((a, b) => {
+      const indexA = order.indexOf(a.id);
+      const indexB = order.indexOf(b.id);
+      // If a category isn't in the order array, put it at the end
+      if (indexA === -1) return 1;
+      if (indexB === -1) return -1;
+      return indexA - indexB;
+    });
+
     return formattedGallery;
 
   } catch (error) {
