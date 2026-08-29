@@ -7,7 +7,32 @@ export default function CategoryClient({ initialCategories }: { initialCategorie
   const [name, setName] = useState("");
   const [slug, setSlug] = useState("");
   const [loading, setLoading] = useState(false);
+  
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [editName, setEditName] = useState("");
+  const [editSlug, setEditSlug] = useState("");
+  
   const router = useRouter();
+
+  const handleUpdate = async (id: string) => {
+    if (!editName || !editSlug) return;
+    setLoading(true);
+
+    const res = await fetch(`/api/categories/${id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name: editName, slug: editSlug }),
+    });
+
+    setLoading(false);
+    if (res.ok) {
+      setEditingId(null);
+      router.refresh();
+    } else {
+      const data = await res.json();
+      alert(data.error || "Failed to update category");
+    }
+  };
 
   const handleAdd = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -94,16 +119,67 @@ export default function CategoryClient({ initialCategories }: { initialCategorie
           <tbody className="bg-white divide-y divide-gray-200">
             {initialCategories.map((cat) => (
               <tr key={cat._id.toString()}>
-                <td className="px-6 py-4 whitespace-nowrap">{cat.name}</td>
-                <td className="px-6 py-4 whitespace-nowrap text-gray-500">{cat.slug}</td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                  <button 
-                    onClick={() => handleDelete(cat._id.toString())}
-                    className="text-red-600 hover:text-red-900"
-                  >
-                    Delete
-                  </button>
-                </td>
+                {editingId === cat._id.toString() ? (
+                  <>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <input 
+                        type="text" 
+                        value={editName}
+                        onChange={(e) => {
+                          setEditName(e.target.value);
+                          setEditSlug(e.target.value.toLowerCase().replace(/[^a-z0-9]+/g, "-"));
+                        }}
+                        className="px-2 py-1 border rounded w-full"
+                      />
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <input 
+                        type="text" 
+                        value={editSlug}
+                        onChange={(e) => setEditSlug(e.target.value)}
+                        className="px-2 py-1 border rounded w-full bg-gray-50"
+                      />
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-3">
+                      <button 
+                        onClick={() => handleUpdate(cat._id.toString())}
+                        className="text-green-600 hover:text-green-900"
+                        disabled={loading}
+                      >
+                        Save
+                      </button>
+                      <button 
+                        onClick={() => setEditingId(null)}
+                        className="text-gray-600 hover:text-gray-900"
+                      >
+                        Cancel
+                      </button>
+                    </td>
+                  </>
+                ) : (
+                  <>
+                    <td className="px-6 py-4 whitespace-nowrap">{cat.name}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-gray-500">{cat.slug}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-3">
+                      <button 
+                        onClick={() => {
+                          setEditingId(cat._id.toString());
+                          setEditName(cat.name);
+                          setEditSlug(cat.slug);
+                        }}
+                        className="text-indigo-600 hover:text-indigo-900"
+                      >
+                        Edit
+                      </button>
+                      <button 
+                        onClick={() => handleDelete(cat._id.toString())}
+                        className="text-red-600 hover:text-red-900"
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </>
+                )}
               </tr>
             ))}
             {initialCategories.length === 0 && (

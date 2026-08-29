@@ -28,3 +28,31 @@ export async function DELETE(req: Request, { params }: { params: Promise<{ id: s
   }
 }
 
+export async function PUT(req: Request, { params }: { params: Promise<{ id: string }> }) {
+  try {
+    const session = await getServerSession(authOptions);
+    if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
+    const { id } = await params;
+    const { name, slug } = await req.json();
+
+    if (!name || !slug) {
+      return NextResponse.json({ error: "Name and slug are required" }, { status: 400 });
+    }
+
+    await connectToDatabase();
+    
+    // Check if slug is taken by ANOTHER category
+    const existing = await Category.findOne({ slug, _id: { $ne: id } });
+    if (existing) {
+      return NextResponse.json({ error: "Slug already exists" }, { status: 400 });
+    }
+
+    const category = await Category.findByIdAndUpdate(id, { name, slug }, { new: true });
+    if (!category) return NextResponse.json({ error: "Category not found" }, { status: 404 });
+    
+    return NextResponse.json(category);
+  } catch (error) {
+    return NextResponse.json({ error: "Failed to update category" }, { status: 500 });
+  }
+}
