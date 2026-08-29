@@ -16,28 +16,32 @@ const nextConfig: NextConfig = {
 
   async rewrites() {
     if (process.env.VERCEL) {
-      return [
-        {
-          source: "/uploads/:path*",
-          destination: "http://117.252.16.132:3000/uploads/:path*",
-        },
-        {
-          source: "/api/media/:path*",
-          destination: "http://117.252.16.132:3000/api/media/:path*",
-        },
-        {
-          source: "/api/media",
-          destination: "http://117.252.16.132:3000/api/media",
-        },
-        {
-          source: "/api/categories/:path*",
-          destination: "http://117.252.16.132:3000/api/categories/:path*",
-        },
-        {
-          source: "/api/categories",
-          destination: "http://117.252.16.132:3000/api/categories",
-        }
-      ];
+      return {
+        beforeFiles: [
+          {
+            source: "/uploads/:path*",
+            destination: "http://117.252.16.132:3000/uploads/:path*",
+          },
+          {
+            source: "/api/media/:path*",
+            destination: "http://117.252.16.132:3000/api/media/:path*",
+          },
+          {
+            source: "/api/media",
+            destination: "http://117.252.16.132:3000/api/media",
+          },
+          {
+            source: "/api/categories/:path*",
+            destination: "http://117.252.16.132:3000/api/categories/:path*",
+          },
+          {
+            source: "/api/categories",
+            destination: "http://117.252.16.132:3000/api/categories",
+          }
+        ],
+        afterFiles: [],
+        fallback: []
+      };
     }
     return [
       {
