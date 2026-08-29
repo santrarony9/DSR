@@ -37,6 +37,17 @@ export const authOptions = {
   session: { strategy: "jwt" as any },
   pages: { signIn: "/admin/login" },
   secret: process.env.NEXTAUTH_SECRET || "dsr_fallback_secret_2026_super_secure",
+  cookies: {
+    sessionToken: {
+      name: `next-auth.session-token`,
+      options: {
+        httpOnly: true,
+        sameSite: 'lax',
+        path: '/',
+        secure: false
+      }
+    }
+  }
 };
 
 const handler = NextAuth(authOptions);
