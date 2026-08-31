@@ -17,15 +17,6 @@ const nextConfig: NextConfig = {
 
 
   async redirects() {
-    if (process.env.VERCEL) {
-      return [
-        {
-          source: "/admin/:path*",
-          destination: "http://117.252.16.132:3000/admin/:path*",
-          permanent: false,
-        },
-      ];
-    }
     return [];
   },
 
@@ -38,20 +29,8 @@ const nextConfig: NextConfig = {
             destination: "http://117.252.16.132:3000/uploads/:path*",
           },
           {
-            source: "/api/media",
-            destination: "http://117.252.16.132:3000/api/media",
-          },
-          {
-            source: "/api/media/:path*",
-            destination: "http://117.252.16.132:3000/api/media/:path*",
-          },
-          {
-            source: "/api/categories",
-            destination: "http://117.252.16.132:3000/api/categories",
-          },
-          {
-            source: "/api/categories/:path*",
-            destination: "http://117.252.16.132:3000/api/categories/:path*",
+            source: "/api/upload",
+            destination: "http://117.252.16.132:3000/api/upload",
           },
         ],
         afterFiles: [],
