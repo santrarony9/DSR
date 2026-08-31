@@ -17,7 +17,10 @@ const SettingsSchema = new mongoose.Schema({
   founder2Image: { type: String, default: "" },
 
   // Hero Images
-  heroImages: [{ url: String, alt: String }]
+  heroImages: [{ url: String, alt: String }],
+
+  // YouTube Reels
+  youtubeReels: [{ type: String }]
 }, { timestamps: true });
 
 export default mongoose.models.Settings || mongoose.model("Settings", SettingsSchema);

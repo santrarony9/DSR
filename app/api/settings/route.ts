@@ -46,6 +46,7 @@ export async function PUT(req: Request) {
     if (body.founder2Image !== undefined) settings.founder2Image = body.founder2Image;
     
     if (body.heroImages !== undefined) settings.heroImages = body.heroImages;
+    if (body.youtubeReels !== undefined) settings.youtubeReels = body.youtubeReels;
 
     await settings.save();
     return NextResponse.json(settings);

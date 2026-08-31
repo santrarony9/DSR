@@ -192,6 +192,48 @@ export default function SettingsForm({ initialData }: { initialData: any }) {
         </div>
       </div>
       
+      {/* YouTube Reels Section */}
+      <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200">
+        <h2 className="text-xl font-bold font-heading mb-6 flex items-center gap-2">
+          YouTube Video Reels
+        </h2>
+        <div className="space-y-4">
+          {(formData.youtubeReels || []).map((url: string, index: number) => (
+            <div key={index} className="flex items-center gap-3">
+              <input
+                type="text"
+                placeholder="e.g. https://www.youtube.com/shorts/xxxxx"
+                className="flex-1 px-4 py-3 rounded-xl border border-slate-200 focus:border-[#C8A96E] focus:ring-1 focus:ring-[#C8A96E] outline-none transition bg-white"
+                value={url}
+                onChange={(e) => {
+                  const newReels = [...(formData.youtubeReels || [])];
+                  newReels[index] = e.target.value;
+                  setFormData({ ...formData, youtubeReels: newReels });
+                }}
+              />
+              <button
+                type="button"
+                onClick={() => {
+                  const newReels = [...(formData.youtubeReels || [])];
+                  newReels.splice(index, 1);
+                  setFormData({ ...formData, youtubeReels: newReels });
+                }}
+                className="bg-red-100 text-red-600 p-3 rounded-xl hover:bg-red-200 transition"
+              >
+                <Trash2 size={20} />
+              </button>
+            </div>
+          ))}
+          <button
+            type="button"
+            onClick={() => setFormData({ ...formData, youtubeReels: [...(formData.youtubeReels || []), ""] })}
+            className="flex items-center justify-center gap-2 w-full py-3 border-2 border-dashed border-slate-300 rounded-xl text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition font-medium"
+          >
+            + Add YouTube Reel URL
+          </button>
+        </div>
+      </div>
+      
       <button 
         type="submit" 
         disabled={loading}

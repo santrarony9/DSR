@@ -8,11 +8,13 @@ import WhyUsSection from "@/components/home/WhyUsSection";
 import ProjectsTabs from "@/components/home/ProjectsTabs";
 import TestimonialsGrid from "@/components/home/TestimonialsGrid";
 import CTASection from "@/components/home/CTASection";
-import { getGalleryData, getHeroImages } from "@/lib/fetchGallery";
+import YoutubeReels from "@/components/home/YoutubeReels";
+import { getGalleryData, getHeroImages, getYoutubeReels } from "@/lib/fetchGallery";
 
 export default async function Home() {
   const galleryCategories = await getGalleryData();
   const heroImages = await getHeroImages();
+  const reels = await getYoutubeReels();
 
   return (
     <div>
@@ -25,6 +27,7 @@ export default async function Home() {
       <WhyUsSection />
       <ProjectsTabs categories={galleryCategories} />
       <TestimonialsGrid />
+      <YoutubeReels reels={reels} />
       <CTASection />
     </div>
   );

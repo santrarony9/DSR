@@ -77,3 +77,18 @@ export async function getHeroImages() {
     return fallbackHero;
   }
 }
+
+import Settings from "./models/Settings";
+export async function getYoutubeReels() {
+  try {
+    await connectToDatabase();
+    const settings = await Settings.findOne().lean();
+    if (settings && settings.youtubeReels) {
+      return settings.youtubeReels;
+    }
+    return [];
+  } catch (error) {
+    console.error("Failed to fetch youtube reels", error);
+    return [];
+  }
+}
